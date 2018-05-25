@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Hyaloid, ">
+
+
+        <title>How Easy To Create A Pishing Page // Hyaloid // </title>
+
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.3.0/pure-min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/theme/css/pure.css">
+    <link rel="stylesheet" href="/theme/css/pygments.css">
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/fitvids/1.0.1/jquery.fitvids.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $(".content").fitVids();
+        });
+    </script>
+</head>
+
+<body>
+<div class="pure-g-r" id="layout">
+    <div class="sidebar sidebar-article pure-u">
+        <header class="header-article">
+            <hgroup>
+                <a href="/author/engindemirbilek.html" title="See posts by EnginDemirbilek">
+                </a>
+                <h2 class="article-info">EnginDemirbilek</h2>
+                <small class="about-author"></small>
+                <h5>Published</h5>
+                <p>Tue 11 December 2018</p>
+                <a href="/">&larr;Home</a>
+            </hgroup>
+        </header>
+    </div>
+    <div class="pure-u">
+        <div class="content">
+            <section class="post">
+                <header class="post-header">
+                    <h1>How Easy To Create A Pishing Page</h1>
+                        <p class="post-meta">
+                            // under                         </p>
+                </header>
+            </section>
+            <p>We see a lot of News about "Hackers Pished Credit Cards", "Hacker Pished Social Media Accounts" bla bla...
+Is pishing attacks are something that requires high level hacking knowledge ? Actually, its not. Its probably one of the simpliest attack to perform. 
+In this article, we will see how easy to create an pishing page to steal credentials (Of course its only for educational purposes ^.^).</p>
+<p>Its doesn't matter that which page you chose but i will take a look at <strong><em>Twitter</em></strong> login page.
+<img alt="Twitter Login" src="/images/pish_em_all/login.png"></p>
+<p>What we see above is, bunch of Front-End codes like Javascript,CSS,Html etc. Since they are all, front-end codes you can edit and copy by playing with your browser inspect element facilities.
+One of the simpliest technique to copy all of this is page is that Copy all source code from view-source page that you can reach it by CTRL+U keyword combination.</p>
+<p><img alt="Twitter source" src="/images/pish_em_all/source.png"></p>
+<p>Copy all of sweet source code to a local file that you will serve it with your web service. In my case, im taking all of the source in an index.php file that i will serve it with my apache service.</p>
+<p>After these step, you can actually reach your fake page by starting your webservice.</p>
+<p><img alt="Twitter fakepage" src="/images/pish_em_all/fake_page.png"></p>
+<p>Change POST Form variables to control credentials that user will send.</p>
+<p><img alt="Twitter fakepage" src="/images/pish_em_all/chase.png"></p>
+<p>And last step add a simple logger on top of the page.</p>
+<p><img alt="Twitter fakepage" src="/images/pish_em_all/logger.png"></p>
+<p>Thats it, whenever a user try to log in to your fake page, you will store her/his credentials in "log" file.</p>
+<p>You can get my simple logger from github: <a href="https://github.com/EnginDemirbilek/PHPScripts/blob/master/PHPLogger">EnginDemirbilek</a></p>
+            <div class="hr"></div>
+            <a href="#" class="go-top">Go Top</a>
+<footer class="footer">
+    <p>&copy; Hyaloid &ndash;
+        Built with <a href="https://github.com/PurePelicanTheme/pure">Pure Theme</a>
+        for <a href="http://blog.getpelican.com/">Pelican</a>
+    </p>
+</footer>        </div>
+    </div>
+</div>
+    <script>
+        var $top = $('.go-top');
+
+        // Show or hide the sticky footer button
+        $(window).scroll(function() {
+            if ($(this).scrollTop() > 200) {
+                $top.fadeIn(200);
+            } else {
+                $top.fadeOut(200);
+            }
+        });
+
+        // Animate the scroll to top
+        $top.click(function(event) {
+            event.preventDefault();
+            $('html, body').animate({scrollTop: 0}, 300);
+        })
+
+        // Makes sure that the href="#" attached to the <a> elements
+        // don't scroll you back up the page.
+        $('body').on('click', 'a[href="#"]', function(event) {
+            event.preventDefault();
+        });
+    </script>
+</body>
+</html>
