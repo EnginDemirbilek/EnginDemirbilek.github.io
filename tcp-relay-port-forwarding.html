@@ -3,10 +3,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Hyaloid, ">
+    <meta name="description" content="A Pathetic Soul, ">
 
 
-        <title>TCP RELAY / PORT FORWARDING // Hyaloid // </title>
+        <title>TCP RELAY / PORT FORWARDING // A Pathetic Soul // </title>
 
 
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.3.0/pure-min.css">
@@ -48,10 +48,10 @@
                 </header>
             </section>
             <p>Pentest işlemleri esnasında kimi zaman saldırgan makinelerden erişemediğimiz fakat ilgili makinelerden shell aldığımız vakit çalıştığını gördüğümüz çeşitli servis ve portlarla karşılılaşıyoruz.
-Böyle zamanlarda eğer ilgili servisleri sömürebileceğimiz yeterli bilgiye sahipsek gerek msfconsole gereksede plink gibi uygulamalar aracılığıyla kendi üzerimize TCP paketleri yollayıp hedef sistemin ilgili portlarına yönlendiriyoruz.
+Böyle zamanlarda eğer ilgili servisleri sömürebileceğimiz yeterli bilgiye sahipsek gerek msfconsole gerekse de plink gibi uygulamalar aracılığıyla kendi üzerimize TCP paketleri yollayıp hedef sistemin ilgili portlarına yönlendiriyoruz.
 Hikaye ve tanım kısımları çok uzun tutmadan örnek bir senaryoya göz atalım;
-Çeşitli senaryolar dahilinde kullanım alanı oldukça genişleyebilecek bu tekniği bu makalede ki senaryo dahilinde düşük yetkilerle shell elde ettiğimiz bir makine 
-üzerinde ki <strong>Firewall</strong> yapılandırmasını atlatıp daha önce hatalı konfigürasyonlardan ve/veya yedek dosyalarından elde ettiğimiz <strong>mssql giriş bilgilerini
+Çeşitli senaryolar dahilinde kullanım alanı oldukça genişleyebilecek bu tekniği bu makaledeki senaryo dahilinde düşük yetkilerle shell elde ettiğimiz bir makine 
+üzerindeki <strong>Firewall</strong> yapılandırmasını atlatıp daha önce hatalı konfigürasyonlardan ve/veya yedek dosyalarından elde ettiğimiz <strong>mssql giriş bilgilerini
 kullanarak</strong> <strong>NT AUTHORITY\System</strong> yetkilerinde bir shell almak için kullanacağız.</p>
 <p><strong>Düşük Yetkili Shell:</strong></p>
 <p><img alt="Tcp Relay" src="/images/tcp_relay/low-privs.png"></p>
@@ -101,10 +101,10 @@ Meterpreter'in modüllerinden biri olan <strong>portfwd</strong> modülünü kul
 <p><img alt="Tcp Relay" src="/images/tcp_relay/empire.png"></p>
 <p><code>powershell komutunun çok uzun olmasından ötürü tamamı yok.</code></p>
 <p>Sırada ikinci adım va: <strong>xp_cmdshell</strong> özelliğini kullanmak.
-<strong>sqsh</strong> gibi uygulamar aracılığı ile <strong>xp_cmdshell</strong> özelliğini kullanabileceğiniz gibi msfconsole üzerindede ilgili özelliği kullanabileceğimiz
+<strong>sqsh</strong> gibi uygulamar aracılığı ile <strong>xp_cmdshell</strong> özelliğini kullanabileceğiniz gibi msfconsole üzerinde de ilgili özelliği kullanabileceğimiz
 bir modül mevcut. Bu senaryo dahilinde msfconsole'u kullanalım.</p>
 <p><img alt="Tcp Relay" src="/images/tcp_relay/mssql-exec.png"></p>
-<p>Modülü çalıştırdığımıda: <strong>Bingo !</strong></p>
+<p>Modülü çalıştırdığımızda: <strong>Bingo !</strong></p>
 <p><img alt="Tcp Relay" src="/images/tcp_relay/empire-success.png"></p>
 <p><img alt="Tcp Relay" src="/images/tcp_relay/final.png"></p>
 <p>Makale Özeti:</p>
@@ -118,7 +118,7 @@ bir modül mevcut. Bu senaryo dahilinde msfconsole'u kullanalım.</p>
             <div class="hr"></div>
             <a href="#" class="go-top">Go Top</a>
 <footer class="footer">
-    <p>&copy; Hyaloid &ndash;
+    <p>&copy; A Pathetic Soul &ndash;
         Built with <a href="https://github.com/PurePelicanTheme/pure">Pure Theme</a>
         for <a href="http://blog.getpelican.com/">Pelican</a>
     </p>
