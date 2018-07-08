@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A Pathetic Soul, ">
+
+
+        <title>Smb Relay Saldırıları (HASH KIRMA YÖNLENDİR !) // A Pathetic Soul // </title>
+
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.3.0/pure-min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/theme/css/pure.css">
+    <link rel="stylesheet" href="/theme/css/pygments.css">
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/fitvids/1.0.1/jquery.fitvids.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $(".content").fitVids();
+        });
+    </script>
+</head>
+
+<body>
+<div class="pure-g-r" id="layout">
+    <div class="sidebar sidebar-article pure-u">
+        <header class="header-article">
+            <hgroup>
+                <a href="/author/engindemirbilek.html" title="See posts by EnginDemirbilek">
+                </a>
+                <h2 class="article-info">EnginDemirbilek</h2>
+                <small class="about-author"></small>
+                <h5>Published</h5>
+                <p>Sun 08 July 2018</p>
+                <a href="/">&larr;Home</a>
+            </hgroup>
+        </header>
+    </div>
+    <div class="pure-u">
+        <div class="content">
+            <section class="post">
+                <header class="post-header">
+                    <h1>Smb Relay Saldırıları (HASH KIRMA YÖNLENDİR !)</h1>
+                        <p class="post-meta">
+                            // under                         </p>
+                </header>
+            </section>
+            <p>Merhaba, bu makalede enteresan şekilde türkçe kaynaklar üzerinde pek sık bulunmayan SMB Relay saldırılarından bahsedeceğiz.
+Her ne kadar yeni bir konu olmasa ve konu üzerinde ingilizce yazılmış tonla kaynak olsada türkçe pek kaynak olmamasından ötürü
+arka tarafta işleyen işlemler ve kavramlardan basitçe bahsedelim;</p>
+<p><strong> NTLM </strong></p>
+<p>NTLM local Microsoft mimarilerde SAM (Secure Account Manager) databaseleri üzerinde ve Domain Controller cihazlar üzerinde NTDS.dit databaseleri üzerinde tutulan
+bir şifreleme algoritmasıdır. Varsayılan olarak Microsoft mimarilerde bu şifreleme algoritmasıyla şifrelenmiş hashler kullanılarak giriş işlemleri gerçekleştirilir.</p>
+<div class="highlight"><pre><span></span>2F81CFBCD6E3DF802856664E22FEAEB0 (NTLM HASH)
+</pre></div>
+
+
+<ol>
+<li>Kullanıcı giriş bilgilerini yollar.</li>
+<li>Sunucu bir challenge yollar.</li>
+<li>Kullanıcı hash ile şifrelenmiş challeng'i cevap olarak yollar.</li>
+<li>Her şey yolundaysa giriş sağlanır.</li>
+</ol>
+<p><img alt="NTLM Auth" src="/images/smb_relay/ntlm_auth.png"></p>
+<p><code>Pentester gözüyle bakmak gerekirse de, yeterli yetkiye sahip kullanıcıların NTLM hash değerleri elde
+edildiyse herhangi bir çözümleme yapmadan direkt olarak LM:NTLM hashleri hedef sistemlere yollanarak
+ters bir bağlantı eldesi yapabilmek mümkündür (Pass The Hash).</code></p>
+<p><strong>Net-NTLMv1/v2</strong></p>
+<p>NTLM şifreleme algoritmasına nazaran kırılması daha güç ve Pass The Hash saldırılarının yapılmasının önlendiği bir şifreleme algoritması.
+Örnek bir Net-NTLM hash'inin görüntüsünü şöyle olacaktır;</p>
+<div class="highlight"><pre><span></span>admin::N46iSNekpT:08ca45b7d7ea58ee:88dcbe4446168966a153a0064958dac6:5c7830315c7830310000000000000b45c67103d07d7b95acd12ffa11230e0000000052920b85f78d013c31cdb3b92f5d765c783030
+</pre></div>
+
+
+<p><strong>SMB RELAY</strong></p>
+<p>Pass The Hash saldırılarının yapılamadığı Net-NTLM hashlerini kırmaya uğraşmak yerine düzenlenen bu saldırılarda, network üzerinden yakalanan (responder) Net-NTLM
+hashleri farklı cihazlar üzerine yönlendirilerek giriş işlemini tamamlamaya ve giriş işlemi tamamlanan sistemler üzerinde komut yürütmeye dayalı saldırılar olarak 
+tanımlanır.
+Bu saldırılarda dikkat edilmesi gereken husus hedef sistemler üzerine <strong>SMB Sign</strong> özelliğinin kapalı halde bulunması, ve yakalanan Net-NTLM hash'inin yetkili bir
+kullanıcıya ait olmasıdır.</p>
+<p>Belirtilen 2 özelliğin olmaması durumunda saldırı başarısız olacaktır.</p>
+<p>Yapılacak saldırıyı ufak bir şema üzerinde göstermek gerekirse;</p>
+<p><img alt="Attack Sema" src="/images/smb_relay/attack_sema.png"></p>
+<p>Ilgili saldırıları gerçekleştirmek için farklı toollar bulunmakla birlikte bu senaryo dahilinde ağ üzerinde ki paketleri yakalamak ve SMB Sign özelliğini
+kontrol etmek adına <strong>Responder</strong>, yakalanan hashleri yönlendirmek içinse <strong>Smbrelayx.py</strong> tollarını kullanacağız.</p>
+<p>Hikaye ve tanım kısımlarını daha uzun tutmadan ufak bir demo yapalım;</p>
+<p><strong>Responder aracinin yapılandırılması: </strong></p>
+<p>Smbrelayx aracının SMB ve HTTP Serverlar oluşturmasından ötürü responder ile çakışmaması için responder aracının konfigürasyon(responder.conf) dosyasından
+ilgili özellikleri kapatmamız gerekiyor;</p>
+<p><img alt="Responder Conf" src="/images/smb_relay/responder_conf.png"></p>
+<p>İşlemin ardından responder cihazini çalıştıralım;</p>
+<p><img alt="Responder Conf" src="/images/smb_relay/responder.png"></p>
+<p><strong>smbrelayx araci: </strong></p>
+<p><img alt="smbrelayx" src="/images/smb_relay/smbrelayx.png"></p>
+<p>Yapılandırma işlemlerinin bitmesinin ardından her ne zaman yetkili bir kullanıcı yanlış bir paylaşım noktasına gitmeye çalışsa empire üzerinden
+ters bağlantı elde edeceğiz.</p>
+<p><img alt="empire" src="/images/smb_relay/empire.png"></p>
+<p>Empire github: <a href="https://github.com/EmpireProject/Empire">Empire</a></p>
+<p>Responder github: <a href="https://github.com/SpiderLabs/Responder">Responder</a></p>
+<p>Smbrelayx: <a href="https://github.com/CoreSecurity/impacket">İmpacket</a></p>
+            <div class="hr"></div>
+            <a href="#" class="go-top">Go Top</a>
+<footer class="footer">
+    <p>&copy; A Pathetic Soul &ndash;
+        Built with <a href="https://github.com/PurePelicanTheme/pure">Pure Theme</a>
+        for <a href="http://blog.getpelican.com/">Pelican</a>
+    </p>
+</footer>        </div>
+    </div>
+</div>
+    <script>
+        var $top = $('.go-top');
+
+        // Show or hide the sticky footer button
+        $(window).scroll(function() {
+            if ($(this).scrollTop() > 200) {
+                $top.fadeIn(200);
+            } else {
+                $top.fadeOut(200);
+            }
+        });
+
+        // Animate the scroll to top
+        $top.click(function(event) {
+            event.preventDefault();
+            $('html, body').animate({scrollTop: 0}, 300);
+        })
+
+        // Makes sure that the href="#" attached to the <a> elements
+        // don't scroll you back up the page.
+        $('body').on('click', 'a[href="#"]', function(event) {
+            event.preventDefault();
+        });
+    </script>
+</body>
+</html>
