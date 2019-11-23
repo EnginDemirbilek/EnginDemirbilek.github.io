@@ -36,7 +36,7 @@
                 <h2 class="article-info">EnginDemirbilek</h2>
                 <small class="about-author"></small>
                 <h5>Published</h5>
-                <p>23.11.2019</p>
+                <p>Sat 11 November 2019</p>
                 <a href="/">&larr;Home</a>
             </hgroup>
         </header>
@@ -106,10 +106,9 @@ memcpy(DkCBQcsBE, shellcode, sizeof shellcode); //PUT shellcode into memory
 
 
 <p><strong>Antiscan.me Result of Non-Default Meterpreter Executable</p></strong>
-<p><img alt="Default Meterpreter" src="/images/meterpreter/antiscanme_default_meterpreter.png"></p>
+<p><img alt="Default Meterpreter" src="/images/meterpreter/antiscanme_nondefault_meterpreter.png"></p>
 
 <p>Detection rate is reduced more than half, but its still detectable by most popular AV products. </p>
-<p><img alt="Non-Default Meterpreter" src="/images/meterpreter/antiscanme_non_default_meterpreter.png"></p>
 
 <p>
 The reason why most of the popular AV products still detecting our payload is the default shellcode string in our launcher. Not only the shellcode itself but also the keyword "shellcode" can trigger AV products so we need to prevent using them directly.
@@ -119,7 +118,7 @@ To do so, i've created a simple C++ script to create obfuscated shellcode launch
 
 
 <p>Here is a sample of obfuscated shellcode launcher:</p>
-<p><img alt="Default Meterpreter" src="/images/meterpreter/shellcode_launcher.png"></p>
+<p><img alt="Default Meterpreter" src="/images/meterpreter/obfuscated_shellcode_launcher.png"></p>
 
 
 <p>Detection rate of obfuscated shellcode launcher:</p>
