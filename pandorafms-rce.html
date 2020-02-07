@@ -66,7 +66,7 @@ Bunların başında ise ağ izleme yazılımları geliyor. Ufak bir arama sonucu
 doğrudan sanallaştırma yazılımlarıyla kullanılabilecek bir OVA dosyası bulunuyordu. Doğrudan bir OVA dosyası bulunması, uygulamanın kaynak kodlarına erişimde işleri oldukça kolaylaştırıyor.
 OVA dosyasını indirdim ve <a href="https://www.vmware.com/products/fusion.html">VMWARE Fusion</a> ile sanal makine olarak kaldırdım.</p><br>
 
-<p><strong>Bölüm 2: Kaynak Kod Eldesi</strong></p><br>
+<br><p><strong>Bölüm 2: Kaynak Kod Eldesi</strong></p><br>
 <p>Sanal makineye giriş yapmak için dağımtıcının kendi sağladığı <a href= https://pandorafms.com/downloads/guias_rapidas_EN.pdf>kılavuz</a> üzerinden root:pandora giriş bilgisini aldım ve sisteme giriş yaptım.</p>
 <p><img alt="PANDORAFMS 7.0" src="/images/pandorafms/pandorafms.png"></p>
 <p>Sistem üzerinde biraz gezindikten sonra, uygulamaya dair kodların varsayılan webservisi dizini olan /var/www/html dizininde tutulduğunu tespit ettim.</p>
@@ -77,7 +77,7 @@ scp root@pandoraFMSIP:/var/www/html/pandora.tar.gz /tmp/pandora.tar.gz
 </pre></div><br>
 
 
-<p><strong>Bölüm 3: Kaynak Kodun İncelenmesi</strong></p><br>
+<p><strong>Bölüm 3: Kaynak Kodun İncelenmesi</strong></p>
 <p>Dosyaları kendi tercih ettiğim <a href="https://atom.io/"> ATOM idesini kullanarak kurcalamaya başladım.</p>
 <p>Statik kaynak kod analizlerinde komut çalıştırmaya dair bir zafiyet arıyorsak başlı başlı dikkat etmemiz gereken bazı fonksiyonlar var. Bunların bir kaçına örnek olarak;
   <code>
