@@ -44,24 +44,23 @@
                 <header class="post-header">
                     <h1>PANDORAFMS 7.0 Authenticated Remote Code Execution Zafiyeti</h1>
                         <p class="post-meta">
-                            // under                         </p>
+                            //Exploit-DEV                         </p>
                 </header>
             </section>
             <p>Merhaba, PANDORAFMS adında açık kaynaklı bir ağ izleme aracında bulduğum Authenticated RCE zafiyetinin detaylı bulumunu anlatıyor olacağım.
             Statik kaynak kod analizine dair türkçe pek bir kaynak bulunmuyor oluşunu göz önünde bulundurarak makaleyi türkçe kaleme aldım.</p>
 
 <p><strong>AUTHENTICAD RCE </strong></p>
-<p>Authenticated, zafiyetinin tetiklemesi için geçerli bir kullanıcı gerekli olduğunu belirtir. Rce ise uygulama üzerinden uygulamanın çalıştığı sunucuda sistem kodları çalıştırabilmemize olanak sağlayan zafiyet türüdür.</p><div class="highlight"><pre><span></span>2F81CFBCD6E3DF802856664E22FEAEB0 (NTLM HASH)
-</pre></div>
+<p>Authenticated, zafiyetinin tetiklemesi için geçerli bir kullanıcı gerekli olduğunu belirtir. Rce ise uygulama üzerinden uygulamanın çalıştığı sunucuda sistem kodları çalıştırabilmemize olanak sağlayan zafiyet türüdür.</p></div>
 
 <strong>PANDORAFMS </p>
 <ol>
 <li>Uygulama indirme linki: https://pandorafms.org/features/free-download-monitoring-software/</li>
 <li>Zafiyeti tespit ettiğim sürüm: 7.0</li>
-</ol>
+</ol><br>
 
 
-<p><strong>BÖLÜM 1: Uygulama Eldesi</p>
+        <p><strong>BÖLÜM 1: Uygulama Eldesi</strong></p>
 <p>Profesyonel bir kaynak kod analizicisi değilim bu sebeple zafiyet bulmanın kendime göre en basit olacağı uygulama türleri sınıflandırdım.
 Bunların başında ise ağ izleme yazılımları geliyor. Ufak bir arama sonucu PANDORAFMS yazılımına rastladım, hem açık kaynaklıydı hemde indirme linklerinde
 doğrudan sanallaştırma yazılımlarıyla kullanılabilecek bir OVA dosyası bulunuyordu. Doğrudan bir OVA dosyası bulunması, uygulamanın kaynak kodlarına erişimde işleri oldukça kolaylaştırıyor.
@@ -74,7 +73,7 @@ OVA dosyasını indirdim ve <a href="https://www.vmware.com/products/fusion.html
 <p><img alt="PANDORAFMS 7.0" src="/images/pandorafms/pandorafms-kaynak.png"></p>
 <p>Kodları daha uygun bir ortadamda IDE üzerinden incelemek için dizini <a href="https://wiki.ubuntu-tr.net/index.php?title=Tar_komutu_kullan%C4%B1m%C4%B1">TAR</a> ile sıkıştırdım ve SCP kullanarak ana makineme aktardım.</p>
 <div class="highlight"><pre><span></span>tar -czvf pandora.tar.gz /var/www/html/pandora_console
-    scp root@pandoraFMSIP:/var/www/html/pandora.tar.gz /tmp/pandora.tar.gz
+scp root@pandoraFMSIP:/var/www/html/pandora.tar.gz /tmp/pandora.tar.gz
 </pre></div><br>
 
 
