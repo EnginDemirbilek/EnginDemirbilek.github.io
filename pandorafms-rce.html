@@ -82,7 +82,7 @@ scp root@pandoraFMSIP:/var/www/html/pandora.tar.gz /tmp/pandora.tar.gz
 <p>Statik kaynak kod analizlerinde komut çalıştırmaya dair bir zafiyet arıyorsak başlı başlı dikkat etmemiz gereken bazı fonksiyonlar var. Bunların bir kaçına örnek olarak;
   <code>
 system, exec, shell_exec, popen, eval
-  <code>
+  </code>
   fonksiyonları verilebilir.
 </p>
 <p> IDE üzerinde tüm projede bulunan php dosyalarında yukarıda belirttiğim fonksiyonları aramaya başladım ve boşa çabalanan, sanırım beceriksizim, bir b*k bulamıyorum gibi düşüncelerle geçirilen bir kaç saatin sonunda functions_netflow.php dosyasının 648. satırında zafiyete dair çok umut vaadeden bir nokta tespit ettim.
