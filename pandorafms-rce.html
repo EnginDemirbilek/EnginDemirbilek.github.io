@@ -6,7 +6,7 @@
     <meta name="description" content="A Pathetic Soul, ">
 
 
-        <title>PANDORAFMS 7.0 AUTHENTICATED REMOTE CODE EXECUTION</title>
+        <title>PANDORAFMS 7.0 AUTHENTICATED REMOTE CODE EXECUTION x4</title>
 
 
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.3.0/pure-min.css">
@@ -42,7 +42,7 @@
         <div class="content">
             <section class="post">
                 <header class="post-header">
-                    <h1>PANDORAFMS 7.0 Authenticated Remote Code Execution Zafiyeti</h1>
+                    <h1>PANDORAFMS 7.0 Authenticated Remote Code Execution Zafiyeti (x4)</h1>
                         <p class="post-meta">
                             //Exploit-DEV                         </p>
                 </header>
@@ -99,14 +99,14 @@ Fonksiyonu inclediğimde maalesef kullanıcıdan gelen herhangi bir verinin bura
 </p>
 <p><img alt="PANDORAFMS 7.0" src="/images/pandorafms/pandorafms-netflow-fonksiyon-ayrinti.png"></p>
 <p>
-Fakat bereket olsun, $command değişkenine bir şeyler ekleyen yeni fonksiyon çıktı karşıma 904. satırda bulunan <strong>netflow_get_filter_arguments</strong> fonksiyonu. "Hadi yavrum rastgele" diyerek fonksiyonun tanımlandığı noktayı tespit ettim (aynı dosya 917. satır) ve fonksiyonu incelemeye koyuldum.
+    Fakat bereket olsun, <strong>$command</strong> değişkenine bir şeyler ekleyen yeni fonksiyon çıktı karşıma 904. satırda bulunan <strong>netflow_get_filter_arguments</strong> fonksiyonu. "Hadi yavrum rastgele" diyerek fonksiyonun tanımlandığı noktayı tespit ettim (aynı dosya 917. satır) ve fonksiyonu incelemeye koyuldum.
 </p>
 <p><img alt="PANDORAFMS 7.0" src="/images/pandorafms/pandorafms-getfilter-fonksiyon.png"></p>
-<p>Fonksiyon bir sürü farklı girdiyi(ipsrc, ipdst, srcport, dstport) herhangi bir kontrolden $filter_args adında bir değişkene ekliyor ve en sonunda $filter_args değişkenini değer olarak dönüyordu.
+<p>Fonksiyon bir sürü farklı girdiyi(ipsrc, ipdst, srcport, dstport) herhangi bir kontrolden geçirmeden <strong>$filter_args</strong> adında bir değişkene ekliyor ve en sonunda <strong>$filter_args</strong> değişkenini değer olarak dönüyordu.
   Daha sonra bu değer, $command değişkenine ekleniyor ve ilk tespit edilen satırda bulunan exec() fonksiyonuna gönderiliyordu. Yani eğer bu değişkenlerden herhangi birine istediğimiz girdiyi verebilirsek pekala buradan bir RCE elde edebiliriz.
-Aslında aradığım şey $_GET yada $_POST şekilinde kullanıcıdan alınan bir girdiydi fakat bu değişkenlerin hiç birinin geleneksel GET yada POST ile alındığını tespit edemedim. RCE hem çok yakındı hemde çok uzak "Yanımdasın ama dokunamıyorum çok saçma !".
+Aslında aradığım şey $_GET yada $_POST şekilinde kullanıcıdan alınan bir girdiydi fakat bu değişkenlerin hiç birinin geleneksel GET yada POST ile alındığını tespit edemedim. RCE hem çok yakındı hemde çok uzak.
 Bu durum canımı oldukça sıkmış olsada fonksiyonun içinde bulunan değerler adeta ben bul beni yiğidim der gibi gözüme bakıyordu. Uzunca bir süre bu değişkenlerin nasıl alındığı tespit etmeye çalıştım ama yeteri kadar tecrübeli olmamandan ötürü olsa gerek bulamadım.
-Biraz kafa toplamak amacıyla bir cool bir starbucks boy olarak white choclate mocha arası verdim. Bu noktada aslında yine bir şey bulamadığımı düşünüp bırakacaktım ki, aykırı bir tutum sergileyerek googleda ufak bir arama yaptım.</p>
+Biraz kafa toplamak amacıyla bir cool bir Starbucks boy olarak orta boy filtre kahve molası arası verdim. Bu noktada aslında yine bir şey bulamadığımı düşünüp bırakacaktım ki, aykırı bir tutum sergileyerek googleda ufak bir arama yaptım.</p>
 <p><img alt="PANDORAFMS 7.0" src="/images/pandorafms/pandorafms-google.png"></p>
 <p>Buradan dökümanları okumanın ne kadar önemli olduğunu tekrar alıyoruz. Site üzerinde biraz gezindikten sonra, heyecanımı tekrar kazandıran bir ekran görüntüsüne denk geldim</p>
 <p><img alt="PANDORAFMS 7.0" src="/images/pandorafms/pandorafms-google-netflow-dokuman.png"></p>
@@ -126,9 +126,17 @@ Ve sayfada bulunan "router ip" harici herhangi bir inputa oluşturduğum payload
 <br><br>
 <p>
 Dağıtımcıya ulaşmaya çalıştım fakat herhangi bir yanıt alamadım. Bu sebeple makaleyi açık olarak paylaştım.
-Sayfada 4 adet RCE bulunuyor yani aslında bu 4 tane RCE zafiyeti bulumunun bir makalesi oldu. Bu uygulamayla herhangi bir işim olmamasından mütevellit, SQL injection araştırıp zafiyeti Unauthenticated RCE gibi daha zorlu zafiyetlere zincirlemeyle henüz uğraşmadım.
-Ilerleyen günlerde becerebilirsem, bir Unauthenticated RCE exploiti paylaşmaya çalışacağım.
+Güvenlik alanında uğraşssamda daha önce python kodlamakla pek işim olmadı, genel olarak powershell ve c# ile ilgileniyorum fakat işi üsülüne uygun yapmak adına bir python exploiti oluşturmak istedim.
+Bunun için daha önce Mehmet İncenin gözüme çarpan bir kaynak kod analizi makalesi aklıma geldi. Ilgili makeleye <a href="https://www.exploit-db.com/docs/26314">buradan</a> erişebilirsiniz. Doğrudan makalede bulunan
+exploit kodunu PANDORAFMS uygulamasına göre uyarladım ve sonuç olarak çalışan bir exploit elde etmeyi başardım.
 </p>
+       <br>
+        
+<p><strong>BÖLÜM 4: EXPLOIT</p></strong>
+    
+    <div class="highlight"><pre><span></span>
+scp root@pandoraFMSIP:/var/www/html/pandora.tar.gz /tmp/pandora.tar.gz
+</pre></div><br>
 
 
             <div class="hr"></div>
