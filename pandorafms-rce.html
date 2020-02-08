@@ -86,7 +86,7 @@ system, exec, shell_exec, popen, eval
   fonksiyonları verilebilir.
 </p>
 <p> IDE üzerinde tüm projede bulunan php dosyalarında yukarıda belirttiğim fonksiyonları aramaya başladım ve boşa çabalanan, sanırım beceriksizim, bir b*k bulamıyorum gibi düşüncelerle geçirilen bir kaç saatin sonunda functions_netflow.php dosyasının 648. satırında zafiyete dair çok umut vaadeden bir nokta tespit ettim.
-  <p><img alt="PANDORAFMS 7.0" src="/images/pandorafms/pandorafms-netflow.png"></p>
+  <p><img alt="PANDORAFMS 7.0" src="/images/pandorafms/pandorafms-finding-point.png"></p>
 <p>Hem <strong>exec()</strong> fonksiyonu kullanılıyor hemde henüz nerenden geldiği belli olmayan ama ben kullanıcıdan geliyorum diye bağıran bir <stron>$command</stron> değişkeni içeriyordu.
 Fazla Kemal Sunal izlemenin etkisinden olacak "Şimdi Ananı Laciverde Boyadım" diye aklımdan geçirerek <strong>$command</strong> değişkeninin nereden geldiğini kurculamaya başladım.
 </p>
