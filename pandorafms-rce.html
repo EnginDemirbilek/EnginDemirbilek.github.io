@@ -107,7 +107,7 @@ Fonksiyonu inclediğimde maalesef kullanıcıdan gelen herhangi bir verinin bura
 	Daha sonra bu değer, <strong>$command</strong> değişkenine ekleniyor ve ilk tespit edilen satırda bulunan <strong>exec()</strong> fonksiyonuna gönderiliyordu. Yani eğer bu değişkenlerden herhangi birine istediğimiz girdiyi verebilirsek pekala buradan bir RCE elde edebiliriz.
 Aslında aradığım şey $_GET yada $_POST şekilinde kullanıcıdan alınan bir girdiydi fakat bu değişkenlerin hiç birinin geleneksel GET yada POST ile alındığını tespit edemedim. RCE hem çok yakındı hemde çok uzak.
 Bu durum canımı oldukça sıkmış olsada fonksiyonun içinde bulunan değerlerin mantıksal olarak kullanıcıdan alınması gerekiyordu. Uzunca bir süre bu değişkenlerin nasıl alındığı tespit etmeye çalıştım fakat bir sonuca varamadım.
-Biraz kafa toplamak amacıyla mola verdim. Bu noktada aslında yine bir şey bulamadığımı düşünüp bırakacaktım ki, aykırı bir tutum sergileyerek googleda ufak bir arama yaptım.</p>
+Biraz kafa toplamak amacıyla mola verdim. Bu noktada aslında yine bir şey bulamadığımı düşünüp bırakacaktım ki, aykırı bir tutum sergileyerek Googleda ufak bir arama yaptım.</p>
 <p><img alt="PANDORAFMS 7.0" src="/images/pandorafms/pandorafms-google.png"></p>
 <p>Buradan dökümanları okumanın ne kadar önemli olduğunu tekrar alıyoruz. Site üzerinde biraz gezindikten sonra, heyecanımı tekrar kazandıran bir ekran görüntüsüne denk geldim</p>
 <p><img alt="PANDORAFMS 7.0" src="/images/pandorafms/pandorafms-google-netflow-dokuman.png"></p>
