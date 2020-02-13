@@ -100,7 +100,7 @@ Fonksiyonu inclediğimde maalesef kullanıcıdan gelen herhangi bir verinin bura
 </p>
 <p><img alt="PANDORAFMS 7.0" src="/images/pandorafms/pandorafms-netflow-fonksiyon-ayrinti.png"></p>
 <p>
-    Fakat bereket olsun, <strong>$command</strong> değişkenine bir şeyler ekleyen yeni fonksiyon çıktı karşıma 904. satırda bulunan <strong>netflow_get_filter_arguments</strong> fonksiyonu. "Hadi yavrum rastgele" diyerek fonksiyonun tanımlandığı noktayı tespit ettim (aynı dosya 917. satır) ve fonksiyonu incelemeye koyuldum.
+    Fakat bereket olsun, <strong>$command</strong> değişkenine bir şeyler ekleyen yeni fonksiyon çıktı karşıma 904. satırda bulunan <strong>netflow_get_filter_arguments</strong> fonksiyonu. IDE üzerinden fonksiyonun tanımlandığı noktayı tespit ettim (aynı dosya 917. satır) ve fonksiyonu incelemeye koyuldum.
 </p>
 <p><img alt="PANDORAFMS 7.0" src="/images/pandorafms/pandorafms-getfilter-fonksiyon.png"></p>
 <p>Fonksiyon bir sürü farklı girdiyi(ipsrc, ipdst, srcport, dstport) herhangi bir kontrolden geçirmeden <strong>$filter_args</strong> adında bir değişkene ekliyor ve en sonunda <strong>$filter_args</strong> değişkenini değer olarak dönüyordu.
