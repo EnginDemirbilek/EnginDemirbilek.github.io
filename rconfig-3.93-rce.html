@@ -89,9 +89,9 @@ system, exec, shell_exec, popen, eval, passthru
 <p>Sistem fonksiyonu olarak <strong>exec()</strong> fonksiyonu kullanılıyor ve <strong>$fullpath </strong>isminde henüz nereden geldiği belli olmayan bir değişkeni parametre olarak alıyordu.
 Dosyayı biraz daha kurcaladığım vakit <strong>$fullPath</strong> değişkenine 23. satırda <strong>$fileName</strong> isimli başka bir değişkenin eklendiği tespit ettim.
 <p><img alt="rConfig" src="/images/rConfig/rconfig-finding-point-2.png"></p>
-Ve <strong>$fileName</strong> değişkeni yine aynı dosyanın 14-22. satırları arasında kullanıcıdan POST isteğiyle alınıyor ve eğer yoksa sonuna .yml uzantısı ekleniyordu.
+Ve <strong>$fileName</strong> değişkeni yine aynı dosyanın 14-22. satırları arasında kullanıcıdan POST isteğiyle alınıyor ve eğer yoksa sonuna <strong>.yml</strong> uzantısı ekleniyordu.
 <p><img alt="rConfig" src="/images/rConfig/rconfig-finding-point-3.png"></p>
-.yml uzantısı hariç girdiye herhangi bir müdahale yok yani bu durumda bu girdiyi RCE zafiyetini tetiklemek için kullanabiliriz.
+	    <strong>.yml</strong> uzantısı hariç girdiye herhangi bir müdahale yok yani bu durumda bu girdiyi RCE zafiyetini tetiklemek için kullanabiliriz.
 </p><br>
 
 <p><strong>Bölüm 4: Payload Hazırlanması</strong></p>
