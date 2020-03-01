@@ -63,7 +63,7 @@
 <p><strong>BÖLÜM 1: Uygulama Eldesi</strong></p>
 <p>Kaynak kod analizini keyfi istekler doğrultusunda yapmamdan ötürü bu uygulamanın adını <a href="https://www.exploit-db.com/search?q=rconfig">Exploit-DB</a> üzerinde gezinirken gördüm. Benim tespit ettiğim zafiyet harici rce zafiyetleride bulunuyordu.
 Uygulamanın doğrudan bir OVA dosyası olmamasından ötürü el ile  kurulum gerektiyor fakat kuruluma dair direktifler dağıtımcı tarafından resmi website üzerinde yayınlanmış. Bende bu <a href="http://help.rconfig.com/gettingstarted/installation">kurulum kılavuzunu</a> takip ederek VMWARE Fusion üzerinde sanal bir Centos sunucuda uygulamayı kurdum.
-<p><img alt="rConfig" src="/images/rconfig/rconfig-ilk.png"></p>
+<p><img alt="rConfig" src="/images/rConfig/rconfig-ilk.png"></p>
 </p><br>
 
 <p><strong>Bölüm 2: Kaynak Kod Eldesi</strong></p>
@@ -88,9 +88,9 @@ system, exec, shell_exec, popen, eval, passthru
   <p><img alt="rConfig" src="/images/rConfig/rconfig-finding-point.png"></p>
 <p>Sistem fonksiyonu olarak <strong>exec()</strong> fonksiyonu kullanılıyor ve <strong>$fullpath </strong>isminde henüz nereden geldiği belli olmayan bir değişkeni parametre olarak alıyordu.
 Dosyayı biraz daha kurcaladığım vakit <strong>$fullPath</strong> değişkenine 23. satırda <strong>$fileName</strong> isimli başka bir değişkenin eklendiği tespit ettim.
-<p><img alt="rConfig" src="/images/rConfig/rconfig-finding-point-2.png"></p>
+<p><img alt="rConfig" src="/images/rConfig/rConfig-finding-point-2.png"></p>
 Ve <strong>$fileName</strong> değişkeni yine aynı dosyanın 14-22. satırları arasında kullanıcıdan POST isteğiyle alınıyor ve eğer yoksa sonuna <strong>.yml</strong> uzantısı ekleniyordu.
-<p><img alt="rConfig" src="/images/rConfig/rconfig-finding-point-3.png"></p>
+<p><img alt="rConfig" src="/images/rConfig/rConfig-finding-point-3.png"></p>
 	    <strong>.yml</strong> uzantısı hariç girdiye herhangi bir müdahale yok yani bu durumda bu girdiyi RCE zafiyetini tetiklemek için kullanabiliriz.
 </p><br>
 
