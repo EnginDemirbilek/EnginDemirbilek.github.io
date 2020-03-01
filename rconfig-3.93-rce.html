@@ -85,7 +85,7 @@ system, exec, shell_exec, popen, eval, passthru
   fonksiyonları verilebilir.
 </p>
 <p> IDE üzerinde tüm projede bulunan php dosyalarında yukarıda belirttiğim fonksiyonları aramaya başladım ve boşa çıkan bir kaç saat ve tespit edilen RCE harici bir kaç zaafiyetin sonunda <strong>ajaxAddTemplate.php</strong> dosyasının 49. satırında zafiyetli olabileceğini ön gördüğüm bir noktaya rastladım.
-  <p><img alt="rConfig" src="/images/rConfig/rconfig-finding-point.png"></p>
+  <p><img alt="rConfig" src="/images/rConfig/rConfig-finding-point.png"></p>
 <p>Sistem fonksiyonu olarak <strong>exec()</strong> fonksiyonu kullanılıyor ve <strong>$fullpath </strong>isminde henüz nereden geldiği belli olmayan bir değişkeni parametre olarak alıyordu.
 Dosyayı biraz daha kurcaladığım vakit <strong>$fullPath</strong> değişkenine 23. satırda <strong>$fileName</strong> isimli başka bir değişkenin eklendiği tespit ettim.
 <p><img alt="rConfig" src="/images/rConfig/rConfig-finding-point-2.png"></p>
