@@ -86,8 +86,8 @@ system, exec, shell_exec, popen, eval, passthru
   <p><img alt="Centreon" src="/images/Centreon/2.png"></p>
 <p>Sistem fonksiyonu olarak <strong>popen()</strong> fonksiyonu kullanılıyor ve <strong>$command_line </strong>isminde henüz nereden geldiği belli olmayan bir değişkeni parametre olarak alıyordu.
 Dosya üzerinde biraz daha gezinince <strong>$command_line</strong> değişkeninin aynı dosyanın data üst satırlarında veritabanından gelen verilerle oluşturulduğunu gördüm.
-Yaklaşık 3 saat 205-215. satırlar arasında yer alan <strong>service_description</strong>, <strong>host_name</strong> değişkenleri kontrol edip edemeyeceğim üzerinde uğraş verdim. Sonunda ilgili değerleri sistem üzerine verebileceğim bir nokta tespit ettiğimi sanmıştım ki:
 <p><img alt="Centreon" src="/images/Centreon/3.png"></p>
+Yaklaşık 3 saat 205-215. satırlar arasında yer alan <strong>service_description</strong>, <strong>host_name</strong> değişkenleri kontrol edip edemeyeceğim üzerinde uğraş verdim. Sonunda ilgili değerleri sistem üzerine verebileceğim bir nokta tespit ettiğimi sanmıştım ki:
 <p><img alt="Centreon" src="/images/Centreon/4.png"></p>
 Güncellediğim hiç bir değerin gerekli tablo üzerinde değişmediğini gördüm. Zafiyetli fonksiyona parametre olarak verilen veriler <strong>Centreon_storage</strong> adında bir veritabanı üzerinden geliyordu, arayüzden güncellediklerimse <strong>Centreon</strong> adında bir veritabanında güncelleniyordu.
 Bu durumun farkına ise aynı dosyanın 128-136. satırları arasında yer alan veritabanı sorgularına bakınca vardım.
