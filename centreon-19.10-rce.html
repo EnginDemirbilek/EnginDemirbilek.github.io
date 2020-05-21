@@ -51,18 +51,14 @@
         <div class="content">
             <section class="post">
                 <header class="post-header">
-                    <h1>Centreon 19.10.8 Authenticated Remote Code Execution</h1>
+                    <h1>Centreon <= 19.10.15  Authenticated Remote Code Execution</h1>
                         <p class="post-meta">
                             //Exploit-DEV                         </p>
                 </header>
             </section>
-		<p>Merhaba, <a href="https://www.centreon.com/">Centreon</a> adında açık kaynaklı bir ağ yönetim yazılımında bulduğum Authenticated RCE zafiyetinin detaylı bulumunu anlatıyor olacağım.
+		<p>Merhaba, <a href="https://www.centreon.com/">Centreon</a> adında açık kaynaklı bir ağ yönetim yazılımında <a href="https://www.linkedin.com/in/hekindmn/">Hasan Ekin Dumanoğulları</a> ile bulduğumuz Authenticated RCE zafiyetinin detaylı bulumunu anlatıyor olacağım.
           Bir önceki yazıda olduğu gibi türkçeye kaynak kazandırmak adına makaleyi türkçe kaleme aldım. </p>
 
-<p><strong>Hakkımda</strong></p>
-		
-Çalıştığım firma: <strong>Akbilge Bilişim</strong><br>
-		İş tanımım: <strong>Penetration Tester</strong><br><br>
 		
 <p><strong>AUTHENTICAD RCE </strong></p>
 <p>Authenticated, zafiyetinin tetiklemesi için geçerli bir kullanıcı gerekli olduğunu belirtir. RCE ise uygulama üzerinden uygulamanın çalıştığı sunucuda sistem kodları çalıştırabilmemize olanak sağlayan zafiyet türüdür.</p>
@@ -76,52 +72,52 @@
 
 
 <p><strong>BÖLÜM 1: Uygulama Eldesi</strong></p>
-<p>Kaynak kod analizini keyfi istekler doğrultusunda yapmamdan ötürü bu uygulamanın adını <a href="https://www.exploit-db.com/search?q=Centreon">Exploit-DB</a> üzerinde gezinirken gördüm. Benim tespit ettiğim zafiyet harici rce zafiyetleride bulunuyordu.
-Kurulum manuel yapılabileceği gibi yayıncı tarafından hazır OVA ve OVF dosyaları <a href="https://download.centreon.com/">Downloads</a> sayfasına koyulmuş. OVF dosyasını indirip VmwareFUSION ile sanal makineyi ayaklandırdım.
+<p>Kaynak kod analizini keyfi istekler doğrultusunda yapmamızdan ötürü bu uygulamanın adını <a href="https://www.exploit-db.com/search?q=Centreon">Exploit-DB</a> üzerinde gezinirken gördüm. Tespit ettiğimiz zafiyet harici rce zafiyetleride bulunuyordu.
+Kurulum manuel yapılabileceği gibi yayıncı tarafından hazır OVA ve OVF dosyaları <a href="https://download.centreon.com/">Downloads</a> sayfasına koyulmuş. OVF dosyasını indirip VmwareFUSION ile sanal makineyi ayaklandırdık.
 </p><br>
 
 <p><strong>Bölüm 2: Kaynak Kod Eldesi</strong></p>
 <p></p>
-<p>Sanal makine üzerinde gezinirken uygulamaya ait dosyaların <strong>/usr/share/centron</strong> dizininde olduğunu saptadım.</p>
+<p>Sanal makine üzerinde gezinirken uygulamaya ait dosyaların <strong>/usr/share/centron</strong> dizininde olduğunu saptadık.</p>
 <p><img alt="Centreon" src="/images/Centreon/1.png"></p>
-<p>Kodları daha uygun bir ortadamda IDE üzerinden incelemek için dizini <a href="https://wiki.ubuntu-tr.net/index.php?title=Tar_komutu_kullan%C4%B1m%C4%B1">TAR</a> ile sıkıştırdım ve SCP kullanarak ana makineme aktardım.</p>
+<p>Kodları daha uygun bir ortadamda IDE üzerinden incelemek için dizini <a href="https://wiki.ubuntu-tr.net/index.php?title=Tar_komutu_kullan%C4%B1m%C4%B1">TAR</a> ile sıkıştırdım ve SCP kullanarak ana makineye aktardık.</p>
 <div class="highlight"><pre><span></span>tar -czvf Centreon.tar.gz /usr/share/centron/
 scp root@CentreonIP:/usr/share/centron/Centreon.tar.gz /tmp/Centreon.tar.gz
 </pre></div><br>
 
 
 <p><strong>Bölüm 3: Kaynak Kodun İncelenmesi</strong></p>
-        <p>Dosyaları kendi tercih ettiğim <a href="https://atom.io/"> ATOM</a> idesini kullanarak kurcalamaya başladım.</p>
-<p>Diğer makalelerimde de olduğu gibi kodlar arasında aşağıda belirttiğim sistem fonksiyonlarını aramaya başladım:</p>
+        <p>Dosyaları kendi tercih ettiğim <a href="https://atom.io/"> ATOM</a> idesini kullanarak kurcalamaya başladık.</p>
+<p>Diğer makalelerimde de olduğu gibi kodlar arasında aşağıda belirttiğim sistem fonksiyonlarını aramaya başladık:</p>
 <code>
 system, exec, shell_exec, popen, eval, passthru
   </code>
 </p>
-<p> Boşa geçirilen epey bir saatin sonunda <strong>/www/include/views/graphs/graphStatus/displayServiceStatus.php</strong> dosyasının 302. satırında zafiyetli olabilecek bir noktayı saptadım.
+<p> Boşa geçirilen epey bir saatin sonunda <strong>/www/include/views/graphs/graphStatus/displayServiceStatus.php</strong> dosyasının 302. satırında zafiyetli olabilecek bir noktayı saptadık.
   <p><img alt="Centreon" src="/images/Centreon/2.png"></p>
 <p>Sistem fonksiyonu olarak <strong>popen()</strong> fonksiyonu kullanılıyor ve <strong>$command_line </strong>isminde henüz nereden geldiği belli olmayan bir değişkeni parametre olarak alıyordu.
 Dosya üzerinde biraz daha gezinince <strong>$command_line</strong> değişkeninin aynı dosyanın data üst satırlarında veritabanından gelen verilerle oluşturulduğunu gördüm.
 <p><img alt="Centreon" src="/images/Centreon/3.png"></p>
-Yaklaşık 3 saat 205-215. satırlar arasında yer alan <strong>service_description</strong>, <strong>host_name</strong> değişkenleri kontrol edip edemeyeceğim üzerinde uğraş verdim. Sonunda ilgili değerleri sistem üzerine verebileceğim bir nokta tespit ettiğimi sanmıştım ki:
+Yaklaşık 3 saat 205-215. satırlar arasında yer alan <strong>service_description</strong>, <strong>host_name</strong> değişkenleri kontrol edip edemeyeceğimize üzerinde uğraş verdik. Sonunda ilgili değerleri sistem üzerine verebileceğim bir nokta tespit ettiğimizi sanmıştık ki:
 <p><img alt="Centreon" src="/images/Centreon/4.png"></p>
-Güncellediğim hiç bir değerin gerekli tablo üzerinde değişmediğini gördüm. Zafiyetli fonksiyona parametre olarak verilen veriler <strong>Centreon_storage</strong> adında bir veritabanı üzerinden geliyordu, arayüzden güncellediklerimse <strong>Centreon</strong> adında bir veritabanında güncelleniyordu.
-Bu durumun farkına ise aynı dosyanın 128-136. satırları arasında yer alan veritabanı sorgularına bakınca vardım.
+Güncellenilen hiç bir değerin gerekli tablo üzerinde değişmediğini gördük. Zafiyetli fonksiyona parametre olarak verilen veriler <strong>Centreon_storage</strong> adında bir veritabanı üzerinden geliyordu, arayüzden güncellediklerimse <strong>Centreon</strong> adında bir veritabanında güncelleniyordu.
+Bu durumun farkına ise aynı dosyanın 128-136. satırları arasında yer alan veritabanı sorgularına bakınca vardık.
 <p><img alt="Centreon" src="/images/Centreon/5.png"></p>
 <strong>index_data</strong> isimli bir tablo <strong>Centreon</strong> veritabanı üzerinde bulunmuyordu fakat Centreon_storage veritabanında bulunuyordu.
 <p><img alt="Centreon" src="/images/Centreon/6.png"></p>
-Bir kaç saat uğraşında ardından <strong>Centreon_storage</strong> veritabanı altında bulunan <strong>index_data</strong> tablosunu güncelleyebileceğim hiç bir nokta saptayamadım.
-Bunun yerine diğer girdilere oynamaya çalıştım, graph verileri üzerinde güncelleme yapabileceğim noktalar vardı fakat casting işlemlerinden ötürü string veremiyordum o yüzden onlarıda es geçtim.
-Tekrar irdelemenin ardından <strong>$command_line</strong> değişkenine eklenen farklı bir girdi daha gördüm.<br>
+Bir kaç saat uğraşında ardından <strong>Centreon_storage</strong> veritabanı altında bulunan <strong>index_data</strong> tablosunu güncelleyebileceğim hiç bir nokta saptayamadık.
+Bunun yerine diğer girdilere oynamaya çalıştım, graph verileri üzerinde güncelleme yapabileceğim noktalar vardı fakat casting işlemlerinden ötürü string veremiyorduk o yüzden onlarıda es geçtik.
+Tekrar irdelemenin ardından <strong>$command_line</strong> değişkenine eklenen farklı bir girdi daha bulduk.<br>
 116. satırda bulunan <strong>$RRDdatabase_path</strong> değişkeni.
 <p><img alt="Centreon" src="/images/Centreon/7.png"></p>
-Bu değişken <strong>getStatusDBDir($pearDBO)</strong> fonksiyonundan dönen değeri alıyordu. Kodları biraz kurcalayıp ilgili fonksiyonun aynı dosyanın 58-63. satırları arasında tanımlandığını ve ilgili değişkeninde veritabanından geldiğini saptadım.
+Bu değişken <strong>getStatusDBDir($pearDBO)</strong> fonksiyonundan dönen değeri alıyordu. Kodları biraz kurcalayıp ilgili fonksiyonun aynı dosyanın 58-63. satırları arasında tanımlandığını ve ilgili değişkeninde veritabanından geldiğini saptadık.
 <p><img alt="Centreon" src="/images/Centreon/8.png"></p>
-Eğer veritabanı üzerinden gelen bu değeri güncellemenin bir yolunu bulabilirsem pekala komutlarımıda çalıştırabilirdim. Tekrar kodları kurcalamakla geçirilen bir sürenin ardından,
-<strong>/include/Administration/parameters/DB-Func.php</strong> dosyasının 791. satırında tanımlanan <strong>updateODSConfigData</strong> fonksiyonunda ilgili değerin güncellendiğini gördüm.
+Eğer veritabanı üzerinden gelen bu değeri güncellemenin bir yolunu bulabilirsek pekala komutlarımıda çalıştırabilirdik. Tekrar kodları kurcalamakla geçirilen bir sürenin ardından,
+<strong>/include/Administration/parameters/DB-Func.php</strong> dosyasının 791. satırında tanımlanan <strong>updateODSConfigData</strong> fonksiyonunda ilgili değerin güncellendiğini gördük.
 <p><img alt="Centreon" src="/images/Centreon/9.png"></p>
-Yani eğer ki <strong>updateODSConfigData</strong> fonksiyonunu kontrol eden ve kullanıcıdan girdi alan bir nokta bulursam zafiyeti tetikleyebilirdim. IDE'nin arama özelliğini kullanarak ilgili fonksiyonunun çağırıldığı yerleri saptadım:
+Yani eğer ki <strong>updateODSConfigData</strong> fonksiyonunu kontrol eden ve kullanıcıdan girdi alan bir nokta bulursak zafiyeti tetikleyebilirdik. IDElerin arama özelliğini kullanarak ilgili fonksiyonunun çağırıldığı yerleri saptadık:
 <p><img alt="Centreon" src="/images/Centreon/10.png"></p>
-Ilgili noktaya kullanıcı arayüzünden gittiğimde artık RCE'yi tetiklemek için önümde herhangi bir engel kalmadı.
+Ilgili noktaya kullanıcı arayüzünden gittiğimde artık RCE'yi tetiklemek için önümüzde herhangi bir engel kalmadı.
 <p><img alt="Centreon" src="/images/Centreon/11.png"></p>
 
 
